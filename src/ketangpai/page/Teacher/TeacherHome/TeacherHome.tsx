@@ -4,13 +4,11 @@ import Middle from "./components/Middle/Middle";
 import MiddleTop from "./components/MiddleTop/MiddleTop";
 
 
-
-
 export default ()=>{
     return(
         <div>
-            <MiddleTop />
-            <Middle />
+            <MiddleTop/>
+            <Middle/>
         </div>
     )
 }
