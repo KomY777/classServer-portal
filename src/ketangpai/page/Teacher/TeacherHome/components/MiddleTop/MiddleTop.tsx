@@ -39,7 +39,7 @@ const HeaderBottom = () => {
     ]
 
     const [openCreateCourse, setOpenCreateCourse] = useState<boolean>(false);
-    const [openArchive, setOpenArchive] = useState<boolean>(true)
+    const [openArchive, setOpenArchive] = useState<boolean>(false)
 
 
     // 点击×
@@ -140,7 +140,6 @@ export default () => {
             >
                 <Panel
                     header={<HeaderBottom/>}
-
                     key="1"
                     showArrow={false}
                 >
@@ -152,6 +151,7 @@ export default () => {
                             classes={item.classes}
                             classNumber={item.classNumber}
                             classImg={item.classImg}
+                            url={"/teacher/course/learn"}
                         />
                     ))}
                 </Panel>

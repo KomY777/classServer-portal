@@ -74,6 +74,7 @@ export default () => {
                             classes={item.classes}
                             classNumber={item.classNumber}
                             classImg={item.classImg}
+                            url={"/student/course/learn"}
                         />
                     ))}
                 </Panel>

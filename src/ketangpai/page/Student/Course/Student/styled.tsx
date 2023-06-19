@@ -8,7 +8,6 @@ const Wrapper = styled.div`
 `
 
 
-
 export {
     Wrapper,
 }

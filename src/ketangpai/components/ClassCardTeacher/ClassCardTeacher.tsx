@@ -2,14 +2,16 @@ import React from "react";
 import {Button, Card, Dropdown, MenuProps, Space} from "antd";
 import {BottomCard, Classes, CourseTitle, QOWrapper, Time, TopCard} from "./styled";
 import {DownOutlined, EllipsisOutlined, QrcodeOutlined, SmileOutlined, UserOutlined} from "@ant-design/icons";
+import {useNavigate} from "react-router-dom";
 
 export interface cardData {
     time: string;
     title: string;
     classes: string;
     classNumber: string;
-    studentNumber:string;
-    classImg:string;
+    studentNumber: string;
+    classImg: string;
+    url: string;
 }
 
 
@@ -20,8 +22,10 @@ export default ({
                     classNumber,
                     studentNumber,
                     classImg,
+                    url,
                 }: cardData) => {
 
+    const navigate = useNavigate();
 
 
     const items: MenuProps['items'] = [
@@ -62,8 +66,11 @@ export default ({
             }}
         >
             <TopCard
+                onClick={() => {
+                    navigate(`${url}`, {replace: true})
+                }}
                 style={{
-                    backgroundImage:`url(${classImg})`
+                    backgroundImage: `url(${classImg})`
                 }}
             >
                 <Time>
@@ -77,10 +84,10 @@ export default ({
                 </Classes>
                 <QOWrapper>
                     <QrcodeOutlined/>&nbsp;&nbsp;&nbsp;&nbsp;{classNumber}
-                    <Dropdown className="rightBottom" menu={{ items }}>
+                    <Dropdown className="rightBottom" menu={{items}}>
                         <a onClick={(e) => e.preventDefault()}>
                             <Space>
-                                <EllipsisOutlined />
+                                <EllipsisOutlined/>
                             </Space>
                         </a>
                     </Dropdown>

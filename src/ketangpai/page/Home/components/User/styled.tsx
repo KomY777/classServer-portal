@@ -13,27 +13,38 @@ const Wrapper = styled.div`
   background-color: burlywood;
 `
 const WrapperChild = styled.div`
-  background-color: white;
-  border-radius: 20px;
-  padding: 10px;
-  width: 300px;
-  height: 350px;
+  //padding: 10px;
+  padding: 80px 60px 10px 10px;
+  width: 350px;
   margin: auto;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  margin-top: 70px;
+  //position: absolute;
+  //text-align: center;
+  //top: 0;
+  //left: 0;
+  //right: 0;
+  //bottom: 0;
   .Right{
     width: 80%;
   }
   .Left{
     margin-top: 10px;
   }
-  
+`
+
+
+const WrapperBottom = styled.div`
+  width: 100%;
+  //width: 410px;
+  background-color: white;
+  border-radius: 20px;
+  padding: 30px;
+  //height: 320px;
+  height: auto;
 `
 
 export {
     Wrapper,
     WrapperChild,
+    WrapperBottom,
 }

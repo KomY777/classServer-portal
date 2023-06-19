@@ -1,7 +1,8 @@
 import React from "react";
-import Top from "./components/Top/Top";
+import Top from "../../../components/Top/Top";
 import Middle from "./components/Middle/Middle";
 import MiddleTop from "./components/MiddleTop/MiddleTop";
+import MiddleOperate from "./components/MiddleOperate";
 
 
 
@@ -9,7 +10,9 @@ import MiddleTop from "./components/MiddleTop/MiddleTop";
 export default ()=>{
     return(
         <div>
+            <Top/>
             <MiddleTop />
+            <MiddleOperate/>
             <Middle />
         </div>
     )

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Button, Card, Collapse, Form, Input, message, Modal} from 'antd';
 import {HeaderBottomLeft, HeaderBottomRight, HeaderBottomWrapper, Wrapper} from "./styled";
 import classImg from "../../../../../../Static/img.png";
@@ -101,6 +101,12 @@ const HeaderBottom = () => {
 export default () => {
 
 
+    const [topDatas,setTopDatas] = useState();
+
+    useEffect(()=>{
+
+    })
+
     const data: Array<cardData> = [
         {
             time: "2022-2023 第二学期",
@@ -163,6 +169,7 @@ export default () => {
                             classes={item.classes}
                             classNumber={item.classNumber}
                             classImg={item.classImg}
+                            url={"/student/course/learn"}
                         />
                     ))}
                 </Panel>

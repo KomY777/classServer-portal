@@ -7,7 +7,8 @@ const Wrapper = styled.div`
   line-height: 64px;
   top: 0px;
   left: 0px;
-  background-color: beige;
+  background-color: white;
+  box-shadow: 0 1px 0 0 #dfdfdf;
   z-index: 999;
 `
 
@@ -29,8 +30,15 @@ const MiddleWrapper = styled.div`
 
 const Right = styled.div`
   width: auto;
+  position: fixed;
+  top: 0px;
+  right: 0px;
   height: 64px;
   float: right;
+  display: inline-block;
+  //position:"fixed",
+  //top:"6px",
+  //right:"0px"
 `
 
 

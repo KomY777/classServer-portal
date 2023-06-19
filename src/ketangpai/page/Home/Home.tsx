@@ -1,10 +1,10 @@
 import React from "react";
-import HomeTop from "../../components/HomeTop";
-import {Image} from "antd";
+import User from "./components/User";
 
 export default ()=>{
     return(
         <div>
+            <User/>
         </div>
     )
 }

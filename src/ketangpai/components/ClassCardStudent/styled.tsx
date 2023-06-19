@@ -13,6 +13,12 @@ const BottomCard = styled.div`
   line-height: 70px;
   border-bottom-left-radius: 7px;
   border-bottom-right-radius: 7px;
+  .rightBottom{
+    float: right;
+    position: relative;
+    right: 20px;
+    //top: 55px;
+  }
 `
 
 const Time = styled.div`
@@ -39,12 +45,6 @@ const QOWrapper = styled.div`
   color: white;
   line-height: 24px;
   font-weight: 500;
-  .rightBottom{
-    float: right;
-    position: relative;
-    top: 55px;
-  }
-  
   
 `
 
