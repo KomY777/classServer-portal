@@ -26,7 +26,7 @@ function getItem(
 const items: MenuItem[] = [
     getItem('课程学习', '/student/course/Learn'),
     getItem('课程介绍', '/student/course/Information'),
-    getItem('成绩管理', '/student/course/Learn'),
+    // getItem('成绩管理', '/student/course/Learn'),
 ];
 
 export default () => {
@@ -45,7 +45,8 @@ export default () => {
                 onClick={onClick}
                 style={{
                     fontSize:"20px",
-                    width:"350px",
+                    // width:"350px",
+                    width:"230px",
                     margin:"auto"
             }}
             />

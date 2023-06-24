@@ -3,15 +3,18 @@ import {Button, Card, Collapse, Form, Input, message, Modal} from 'antd';
 import {HeaderBottomLeft, HeaderBottomRight, HeaderBottomWrapper, Wrapper} from "./styled";
 import classImg from "../../../../../../Static/img.png";
 import ClassCard from "../../../../../components/ClassCardStudent/ClassCardStudent";
+import {Ketangpai_COURSE_GETCOURSE} from "../../../../../../api/ketangpai/CourseManagement";
 
 
 export interface cardData {
-    time: string;
-    title: string;
-    classes: string;
-    classNumber: string;
-    teacherName: string;
-    classImg: string;
+    id: string,
+    courseName: string,
+    className: string,
+    courseState: string,
+    teacherId: string,
+    academicYear: string,
+    semester: string,
+    courseCode: string,
 }
 
 
@@ -33,8 +36,8 @@ const HeaderBottom = () => {
     };
 
     // 表单验证成功
-    const onFinish = (values:any) => {
-        console.log('Success:',values);
+    const onFinish = (values: any) => {
+        console.log('Success:', values);
         message.success("加入课程成功")
         setIsModalOpen(false)
     };
@@ -68,13 +71,13 @@ const HeaderBottom = () => {
                         validateFirst={true}
 
                         rules={[
-                            {required:true,message:"必填项"}
+                            {required: true, message: "必填项"}
                         ]}
                     >
-                        <Input placeholder="加课码" />
+                        <Input placeholder="加课码"/>
                     </Form.Item>
                     <Form.Item style={{
-                        marginLeft:"130px"
+                        marginLeft: "130px"
                     }}>
                         <Button
                             htmlType="submit"
@@ -83,7 +86,7 @@ const HeaderBottom = () => {
                             取消
                         </Button>
                         <Button
-                            style={{marginLeft:"50px"}}
+                            style={{marginLeft: "50px"}}
                             htmlType="submit"
                             type="primary"
                         >
@@ -101,52 +104,29 @@ const HeaderBottom = () => {
 export default () => {
 
 
-    const [topDatas,setTopDatas] = useState();
+    const [topDatas, setTopDatas] = useState<Array<cardData>>([]);
 
-    useEffect(()=>{
 
-    })
-
-    const data: Array<cardData> = [
-        {
-            time: "2022-2023 第二学期",
-            title: "python程序设计与数据",
-            classes: "121230201,02,03,04",
-            classNumber: "加课码:X2ZE3S",
-            teacherName: "张金荣",
-            classImg: classImg,
-        },
-        {
-            time: "2022-2023 第二学期",
-            title: "python程序设计与数据",
-            classes: "121230201,02,03,04",
-            classNumber: "加课码:X2ZE3S",
-            teacherName: "张金荣",
-            classImg: classImg,
-        },
-        {
-            time: "2022-2023 第二学期",
-            title: "python程序设计与数据",
-            classes: "121230201,02,03,04",
-            classNumber: "加课码:X2ZE3S",
-            teacherName: "张金荣",
-            classImg: classImg,
-        },
-        {
-            time: "2022-2023 第二学期",
-            title: "python程序设计与数据",
-            classes: "121230201,02,03,04",
-            classNumber: "加课码:X2ZE3S",
-            teacherName: "张金荣",
-            classImg: classImg,
-        },
-    ]
-
+    //根据学生id获取课程信息
+    useEffect(() => {
+        Ketangpai_COURSE_GETCOURSE(1).then(req => {
+            const {data} = req;
+            if (data.code == 200){
+                const temp:Array<cardData>=[]
+                data.data.map((item:cardData)=>{
+                    // @ts-ignore
+                    if (item.courseState === 0){
+                        temp.push(item)
+                    }
+                })
+                setTopDatas([...temp])
+            }
+        })
+    },[])
 
     const onChange = (key: string | string[]) => {
         console.log(key);
     };
-
 
     return (
         <Wrapper>
@@ -157,18 +137,18 @@ export default () => {
             >
                 <Panel
                     header={<HeaderBottom/>}
-
                     key="1"
-                    showArrow={false}
                 >
-                    {data.map((item) => (
+                    {topDatas.map((item) => (
                         <ClassCard
-                            teacherName={item.teacherName}
-                            time={item.time}
-                            title={item.title}
-                            classes={item.classes}
-                            classNumber={item.classNumber}
-                            classImg={item.classImg}
+                            id={item.id}
+                            courseName={item.courseName}
+                            className={item.className}
+                            courseState={item.courseState}
+                            teacherId={item.teacherId}
+                            academicYear={item.academicYear}
+                            semester={item.semester}
+                            courseCode={item.courseCode}
                             url={"/student/course/learn"}
                         />
                     ))}

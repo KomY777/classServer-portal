@@ -2,28 +2,33 @@ import React, {useState} from "react";
 import {Button, Card, Dropdown, Form, Input, MenuProps, Modal, Popconfirm, Space} from "antd";
 import {BottomCard, Classes, CourseTitle, QOWrapper, Time, TopCard} from "./styled";
 import {DownOutlined, EllipsisOutlined, QrcodeOutlined, SmileOutlined, UserOutlined} from "@ant-design/icons";
+import classImg from "../../../../src/Static/img.png";
 import {useNavigate} from "react-router-dom";
 
 
 export interface cardData {
-    time: string;
-    title: string;
-    classes: string;
-    classNumber: string;
-    teacherName: string;
-    classImg: string;
-    url:string,
+    id: string,
+    courseName: string,
+    className: string,
+    courseState: string,
+    teacherId: string,
+    academicYear: string,
+    semester: string,
+    courseCode: string,
+    url: string,
 }
 
 
 export default ({
-                    time,
-                    title,
-                    classes,
-                    classNumber,
-                    teacherName,
-                    classImg,
-                    url,
+                    id,
+                    courseName,
+                    className,
+                    courseState,
+                    teacherId,
+                    academicYear,
+                    semester,
+                    courseCode,
+                    url
                 }: cardData) => {
 
 
@@ -38,6 +43,20 @@ export default ({
         setIsModalOpen(true);
     };
 
+    // 置顶
+    const makeTop = () => {
+
+    }
+
+    // 退课
+    const withdrawalCourse = () => {
+
+    }
+
+    //归档
+    const pigeonhole = () => {
+
+    }
 
     const items: MenuProps['items'] = [
         {
@@ -92,20 +111,20 @@ export default ({
                 }}
             >
                 <Time>
-                    {time}
+                    {semester}
                 </Time>
                 <CourseTitle>
-                    {title}
+                    {courseName}
                 </CourseTitle>
                 <Classes>
-                    {classes}
+                    {className}
                 </Classes>
                 <QOWrapper>
-                    <QrcodeOutlined/>&nbsp;&nbsp;&nbsp;&nbsp;{classNumber}
+                    <QrcodeOutlined/>&nbsp;&nbsp;&nbsp;&nbsp;{courseCode}
                 </QOWrapper>
             </TopCard>
             <BottomCard>
-                <UserOutlined/>负责人:{teacherName}
+                <UserOutlined/>负责人:{teacherId}
                 <Dropdown
                     className="rightBottom"
                     menu={{items}}

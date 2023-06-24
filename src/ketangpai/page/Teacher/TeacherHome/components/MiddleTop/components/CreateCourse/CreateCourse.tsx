@@ -1,5 +1,7 @@
 import React from "react";
 import {Button, Form, Input, message, Modal, Select} from "antd";
+import {Ketangpai_COURSE_ADDCOURSE} from "../../../../../../../../api/ketangpai/CourseManagement";
+import {toNumber} from "lodash";
 
 interface Props{
     openCreateCourse:boolean
@@ -13,6 +15,9 @@ export default (
         setOpenCreateCourse,
     }:Props
 ) => {
+
+    const [from] = Form.useForm();
+
 
     const selectSchoolYear = [
         "2020-2021",
@@ -35,8 +40,25 @@ export default (
 
     // 表单验证成功
     const onFinish = (values: any) => {
-        console.log('Success:', values);
-        message.success("创建课程成功")
+        const Course = {
+            "courseName": values.CourseName,
+            "className": values.teachingClass,
+            "courseState": 0,
+            "teacherId": Number(localStorage.getItem("userId")),
+            "semester": values.semester,
+            "academicYear": values.selectSchoolYear,
+        }
+
+        Ketangpai_COURSE_ADDCOURSE(Course).then(req=>{
+            const {data} = req
+            if (data.code == 200){
+                message.success("创建课程成功")
+                console.log('Success:', Course)
+            }else {
+                message.error("创建课程失败")
+            }
+            console.log(req.data)
+        })
         setOpenCreateCourse(false)
     };
 
@@ -51,9 +73,8 @@ export default (
             cancelText="a"
             centered={true}
         >
-            <div>基本信息</div>
             <Form
-                style={{}}
+                form={from}
                 onFinish={onFinish}
             >
                 <Form.Item
@@ -66,17 +87,6 @@ export default (
                     ]}
                 >
                     <Input showCount maxLength={50} placeholder=""/>
-                </Form.Item>
-                <Form.Item
-                    name="addClassCode"
-                    label="加课码"
-                    validateFirst={true}
-
-                    rules={[
-                        {required: true, message: "必填项"}
-                    ]}
-                >
-                    <Input showCount maxLength={20} placeholder=""/>
                 </Form.Item>
                 <Form.Item
                     name="teachingClass"
@@ -97,7 +107,6 @@ export default (
                     name="selectSchoolYear"
                     label="学年"
                     validateFirst={true}
-
                     rules={[
                         {required: true, message: "必填项"}
                     ]}

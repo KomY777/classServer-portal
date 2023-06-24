@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Button, Card, Collapse, Form, Input, message, Modal, Select} from 'antd';
 import {HeaderBottomLeft, HeaderBottomRight, HeaderBottomWrapper, Wrapper} from "./styled";
 import classImg from "../../../../../../Static/img.png";
@@ -6,15 +6,18 @@ import ClassCardTeacher from "../../../../../components/ClassCardTeacher/ClassCa
 import Title from "antd/lib/skeleton/Title";
 import CreateCourse from "./components/CreateCourse";
 import ArchiveManagement from "./components/ArchiveManagement";
+import {Ketangpai_COURSE_GETCOURSE} from "../../../../../../api/ketangpai/CourseManagement";
 
 
 export interface cardData {
-    time: string;
-    title: string;
-    classes: string;
-    classNumber: string;
-    studentNumber: string;
-    classImg: string;
+    id: string,
+    courseName: string,
+    className: string,
+    courseState: string,
+    teacherId: string,
+    academicYear: string,
+    semester: string,
+    courseCode: string,
 }
 
 
@@ -52,7 +55,6 @@ const HeaderBottom = () => {
 
     // 表单验证成功
     const onFinish = (values: any) => {
-        console.log('Success:', values);
         message.success("创建课程成功")
         setOpenCreateCourse(false)
     };
@@ -66,11 +68,6 @@ const HeaderBottom = () => {
                     onClick={showOpenCreateCourse}
                 >
                     + 创建课程
-                </Button>
-                <Button
-                    onClick={showOpenArchive}
-                >
-                    归档管理
                 </Button>
                 <CreateCourse
                     openCreateCourse={openCreateCourse}
@@ -90,40 +87,27 @@ const HeaderBottom = () => {
 export default () => {
 
 
-    const data: Array<cardData> = [
-        {
-            time: "2022-2023 第二学期",
-            title: "python程序设计与数据",
-            classes: "121230201,02,03,04",
-            classNumber: "加课码:X2ZE3S",
-            studentNumber: "张金荣",
-            classImg: classImg,
-        },
-        {
-            time: "2022-2023 第二学期",
-            title: "python程序设计与数据",
-            classes: "121230201,02,03,04",
-            classNumber: "加课码:X2ZE3S",
-            studentNumber: "张金荣",
-            classImg: classImg,
-        },
-        {
-            time: "2022-2023 第二学期",
-            title: "python程序设计与数据",
-            classes: "121230201,02,03,04",
-            classNumber: "加课码:X2ZE3S",
-            studentNumber: "张金荣",
-            classImg: classImg,
-        },
-        {
-            time: "2022-2023 第二学期",
-            title: "python程序设计与数据",
-            classes: "121230201,02,03,04",
-            classNumber: "加课码:X2ZE3S",
-            studentNumber: "张金荣",
-            classImg: classImg,
-        },
-    ]
+    const [topDatas, setTopDatas] = useState<Array<cardData>>([]);
+
+
+    //根据学生id获取课程信息
+    useEffect(() => {
+        // console.log(localStorage.getItem("userId"))
+        Ketangpai_COURSE_GETCOURSE(localStorage.getItem("userId")).then(req => {
+            const {data} = req;
+            console.log(data)
+            if (data.code == 200){
+                const temp:Array<cardData>=[]
+                data.data.map((item:cardData)=>{
+                    // @ts-ignore
+                    if (item.courseState === 1){
+                        temp.push(item)
+                    }
+                })
+                setTopDatas([...temp])
+            }
+        })
+    },[])
 
 
     const onChange = (key: string | string[]) => {
@@ -143,15 +127,18 @@ export default () => {
                     key="1"
                     showArrow={false}
                 >
-                    {data.map((item) => (
+                    {topDatas.map((item) => (
                         <ClassCardTeacher
-                            studentNumber={item.studentNumber}
-                            time={item.time}
-                            title={item.title}
-                            classes={item.classes}
-                            classNumber={item.classNumber}
-                            classImg={item.classImg}
+                            id={item.id}
+                            courseName={item.courseName}
+                            className={item.className}
+                            courseState={item.courseState}
+                            teacherId={item.teacherId}
+                            academicYear={item.academicYear}
+                            semester={item.semester}
+                            courseCode={item.courseCode}
                             url={"/teacher/course/learn"}
+                            isTop={false}
                         />
                     ))}
                 </Panel>

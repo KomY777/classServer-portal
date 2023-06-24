@@ -1,9 +1,10 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {Button, Menu} from "antd";
 import type {MenuProps} from 'antd';
-import CardByBottomLearn from "./Components/CardByBottomLearn";
-import {TopTitle} from "./styled";
 import {PlusOutlined} from "@ant-design/icons";
+import AddHomework from "./Components/AddHomework";
+import CardByBottomLearn from "./Components/CardByBottomLearn";
+import {Ketangpai_STUDENTHOMEWORK_GETALLHOMEWORK} from "../../../../../../../api/ketangpai/HomeWork";
 
 
 const items: MenuProps['items'] = [
@@ -28,6 +29,13 @@ const items: MenuProps['items'] = [
 
 export default () => {
 
+    const [openCreateCourse, setOpenCreateCourse] = useState<boolean>(false);
+    const [homeworkDate,setHomeworkDate] = useState([])
+    useEffect(()=>{
+        Ketangpai_STUDENTHOMEWORK_GETALLHOMEWORK(1).then(req=>{
+            console.log(req.data)
+        })
+    },[])
 
     return (
 
@@ -41,27 +49,29 @@ export default () => {
             />
             <p
                 style={{
-                    display:"inline-block",
-                    fontSize:"16px",
+                    display: "inline-block",
+                    fontSize: "16px",
                 }}
             >&nbsp;&nbsp;&nbsp;&nbsp;共1个活动</p>
             <Button style={{
-                display:"inline-block",
-                float:"right",
-                backgroundColor:"green"
-            }} type="primary">
-                <PlusOutlined />添加作业
+                display: "inline-block",
+                float: "right",
+                backgroundColor: "green"
+            }}
+                    type="primary"
+                onClick={()=>{
+                    setOpenCreateCourse(true)
+                }}
+            >
+                <PlusOutlined/>新增作业
             </Button>
+            <AddHomework
+                openCreateCourse={openCreateCourse}
+                setOpenCreateCourse={setOpenCreateCourse}
+            />
             <div>
-                <CardByBottomLearn/>
-                <CardByBottomLearn/>
-                <CardByBottomLearn/>
-                <CardByBottomLearn/>
-                <CardByBottomLearn/>
-                <CardByBottomLearn/>
-                <CardByBottomLearn/>
-                <CardByBottomLearn/>
-                <CardByBottomLearn/>
+                {/*<CardByBottomLearn*/}
+                {/*/>*/}
             </div>
         </div>
     )

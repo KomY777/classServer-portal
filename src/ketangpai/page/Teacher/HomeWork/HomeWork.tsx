@@ -22,7 +22,7 @@ export default () => {
             key: '/teacher/homeWork/detail',
         },
         {
-            label: '提交作业',
+            label: '批改作业',
             key: '/teacher/homeWork/SubmitJob',
         },
     ];

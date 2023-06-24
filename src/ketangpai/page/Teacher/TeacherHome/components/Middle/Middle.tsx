@@ -1,19 +1,22 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Card, Collapse} from 'antd';
 import {Wrapper} from "./styled";
 import ClassCardTeacher from "../../../../../components/ClassCardTeacher/ClassCardTeacher";
 import classImg from "../../../../../../Static/img.png";
+import {Ketangpai_COURSE_GETCOURSE} from "../../../../../../api/ketangpai/CourseManagement";
 
 
 const {Panel} = Collapse;
 
 export interface cardData {
-    time: string;
-    title: string;
-    classes: string;
-    classNumber: string;
-    studentNumber:string;
-    classImg:string;
+    id: string,
+    courseName: string,
+    className: string,
+    courseState: string,
+    teacherId: string,
+    academicYear: string,
+    semester: string,
+    courseCode: string,
 }
 
 export default () => {
@@ -21,40 +24,25 @@ export default () => {
         console.log(key);
     };
 
-    const data: Array<cardData> = [
-        {
-            time: "2022-2023 第二学期",
-            title: "python程序设计与数据",
-            classes: "121230201,02,03,04",
-            classNumber: "加课码:X2ZE3S",
-            studentNumber:"20",
-            classImg:classImg,
-        },
-        {
-            time: "2022-2023 第二学期",
-            title: "python程序设计与数据",
-            classes: "121230201,02,03,04",
-            classNumber: "加课码:X2ZE3S",
-            studentNumber:"20",
-            classImg:classImg,
-        },
-        {
-            time: "2022-2023 第二学期",
-            title: "python程序设计与数据",
-            classes: "121230201,02,03,04",
-            classNumber: "加课码:X2ZE3S",
-            studentNumber:"20",
-            classImg:classImg,
-        },
-        {
-            time: "2022-2023 第二学期",
-            title: "python程序设计与数据",
-            classes: "121230201,02,03,04",
-            classNumber: "加课码:X2ZE3S",
-            studentNumber:"20",
-            classImg:classImg,
-        },
-    ]
+    const [topDatas, setTopDatas] = useState<Array<cardData>>([]);
+
+
+    useEffect(() => {
+        // console.log(localStorage.getItem("userId"))
+        Ketangpai_COURSE_GETCOURSE(localStorage.getItem("userId")).then(req => {
+            const {data} = req;
+            if (data.code == 200){
+                const temp:Array<cardData>=[]
+                data.data.map((item:cardData)=>{
+                    // @ts-ignore
+                    if (item.courseState === 0){
+                        temp.push(item)
+                    }
+                })
+                setTopDatas([...temp])
+            }
+        })
+    },[])
 
     return (
         <Wrapper>
@@ -63,18 +51,20 @@ export default () => {
                 defaultActiveKey={['1']}
                 onChange={onChange}
                 accordion
-                // bordered={false}
             >
                 <Panel header="2022-2023 第二学期" key="1">
-                    {data.map((item)=>(
+                    {topDatas.map((item)=>(
                         <ClassCardTeacher
-                            studentNumber={item.studentNumber}
-                            time={item.time}
-                            title={item.title}
-                            classes={item.classes}
-                            classNumber={item.classNumber}
-                            classImg={item.classImg}
-                            url={"/course/teacher/learn"}
+                            id={item.id}
+                            courseName={item.courseName}
+                            className={item.className}
+                            courseState={item.courseState}
+                            teacherId={item.teacherId}
+                            academicYear={item.academicYear}
+                            semester={item.semester}
+                            courseCode={item.courseCode}
+                            url={"/teacher/course/learn"}
+                            isTop={true}
                         />
                     ))}
                 </Panel>

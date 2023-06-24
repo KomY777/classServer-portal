@@ -14,12 +14,25 @@ import imgWork from "../../../../../../../../../Static/img_1.png"
 import {useNavigate} from "react-router-dom";
 
 
+interface Props{
+    homeworkId:string,
+    title:string,
+    endTime:string,
+    date:string,
+    Correcting:string,
+}
 
 
-export default ()=>{
+export default ({
+    homeworkId,
+    title,
+    endTime,
+    date,
+    Correcting,
+                }:Props
+                )=>{
 
     const navigate = useNavigate();
-    const id = 'asdasd'
     return(
         <Wrapper>
             <CodeImg>
@@ -30,17 +43,17 @@ export default ()=>{
                 <TitleByCourse
                     onClick={()=>{
                         navigate(`/teacher/homeWork/detail`,{replace: true})
-                    }}>1.安装Python和Jupyter</TitleByCourse>
+                    }}>{title}</TitleByCourse>
                 <Description>
-                    <Time>提交截止时间：23/02/28 23:59 </Time>
-                    <StateCode>已结束 </StateCode>
+                    <Time>提交截止时间：{endTime}</Time>
+                    <StateCode>{date} </StateCode>
                     <MyselfWork>个人作业</MyselfWork>
                 </Description>
                 <div
                     style={{
                         color:'#4285f4'
                     }}
-                >已批改</div>
+                >{Correcting}</div>
             </DescriptionRight>
         </Wrapper>
     )

@@ -10,9 +10,10 @@ const TopCard = styled.div`
 
 const BottomCard = styled.div`
   margin-left: 20px;
-  line-height: 70px;
+  line-height: 50px;
   border-bottom-left-radius: 7px;
   border-bottom-right-radius: 7px;
+  float: left;
 `
 
 const Time = styled.div`
@@ -39,14 +40,20 @@ const QOWrapper = styled.div`
   color: white;
   line-height: 24px;
   font-weight: 500;
-  .rightBottom{
-    float: right;
-    position: relative;
-    top: 55px;
-  }
-  
-  
 `
+
+
+const RightBottom = styled.div`
+  float: right;
+  position: relative;
+  //top: 55px;
+  line-height: 50px;
+  margin-right: 20px;
+`
+
+
+
+
 
 
 
@@ -57,4 +64,5 @@ export {
     Classes,
     QOWrapper,
     BottomCard,
+    RightBottom,
 }

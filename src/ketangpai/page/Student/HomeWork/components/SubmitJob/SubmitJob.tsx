@@ -3,7 +3,6 @@ import imgWork from "../../../../../../Static/img_1.png";
 import {BottomFrame, CodeImg, Description, DescriptionRight, LeftButton, TitleByCourse} from "./styled";
 import {Button, Divider, Form, Input, Upload, UploadProps} from "antd";
 import {UploadOutlined} from "@ant-design/icons";
-import {promises} from "fs";
 
 
 

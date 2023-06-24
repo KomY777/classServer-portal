@@ -9,18 +9,18 @@ const items: MenuProps['items'] = [
         label: '作业',
         key: 'work',
     },
-    {
-        label: '测试',
-        key: 'test',
-    },
-    {
-        label: '课件等资料',
-        key: 'information',
-    },
-    {
-        label: '通知与公告',
-        key: 'announcement',
-    },
+    // {
+    //     label: '测试',
+    //     key: 'test',
+    // },
+    // {
+    //     label: '课件等资料',
+    //     key: 'information',
+    // },
+    // {
+    //     label: '通知与公告',
+    //     key: 'announcement',
+    // },
 ];
 
 

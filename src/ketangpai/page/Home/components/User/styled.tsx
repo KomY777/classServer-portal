@@ -14,10 +14,12 @@ const Wrapper = styled.div`
 `
 const WrapperChild = styled.div`
   //padding: 10px;
-  padding: 80px 60px 10px 10px;
+  padding: 30px 150px 10px 10px;
   width: 350px;
-  margin: auto;
-  margin-top: 70px;
+  float: right;
+  //margin: 0 auto;
+  margin: auto 0;
+  //margin-top: 10px;
   //position: absolute;
   //text-align: center;
   //top: 0;

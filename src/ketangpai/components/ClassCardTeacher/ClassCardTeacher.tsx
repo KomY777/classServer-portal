@@ -1,54 +1,127 @@
-import React from "react";
+import React, {useState} from "react";
 import {Button, Card, Dropdown, MenuProps, Space} from "antd";
-import {BottomCard, Classes, CourseTitle, QOWrapper, Time, TopCard} from "./styled";
+import {BottomCard, Classes, CourseTitle, QOWrapper, RightBottom, Time, TopCard} from "./styled";
 import {DownOutlined, EllipsisOutlined, QrcodeOutlined, SmileOutlined, UserOutlined} from "@ant-design/icons";
 import {useNavigate} from "react-router-dom";
+import classImg from "../../../../src/Static/img.png";
+import Archive from "./Archive";
+import {Ketangpai_COURSE_REMOVECOURSE, Ketangpai_COURSE_UPDATECOURSE} from "../../../api/ketangpai/CourseManagement";
+import UpdataCourse from "./UpdataCourse";
 
 export interface cardData {
-    time: string;
-    title: string;
-    classes: string;
-    classNumber: string;
-    studentNumber: string;
-    classImg: string;
-    url: string;
+    id: string,
+    courseName: string,
+    className: string,
+    courseState: string,
+    teacherId: string,
+    academicYear: string,
+    semester: string,
+    courseCode: string,
+    url: string,
+    isTop:boolean,
 }
 
 
 export default ({
-                    time,
-                    title,
-                    classes,
-                    classNumber,
-                    studentNumber,
-                    classImg,
+                    id,
+                    courseName,
+                    className,
+                    courseState,
+                    teacherId,
+                    academicYear,
+                    semester,
+                    courseCode,
                     url,
+                    isTop,
                 }: cardData) => {
 
     const navigate = useNavigate();
+    const [openArchive, setOpenArchive] = useState(false)
+    const [openUpdate, setOpenUpdate] = useState(false)
 
+
+
+
+
+
+
+    const DeleteCourse=()=>{
+        Ketangpai_COURSE_REMOVECOURSE(id,`${localStorage.getItem("userId")}`).then(req=>{
+            console.log(req)
+        })
+        window.location.reload()
+    }
+    const makeTop = () =>{
+        const Course = {
+            id:id,
+            courseName:courseName,
+            className:className,
+            courseState:isTop?1:0,
+            teacherId:teacherId,
+            academicYear:academicYear,
+            semester:semester,
+            courseCode:courseCode,
+
+        }
+        Ketangpai_COURSE_UPDATECOURSE(Course).then(req=>{
+            console.log(req.data.code)
+            // if (req.data.data.code){}
+        })
+        window.location.reload()
+    }
 
     const items: MenuProps['items'] = [
         {
             key: '1',
             label: (
-                <Button>
-                    删除
+                <Button
+                    onClick={makeTop}
+                >
+                    {
+                        isTop?"置顶":"取消置顶"
+                    }
                 </Button>
             ),
         },
         {
             key: '2',
             label: (
-                <Button>
+                <Button
+                    style={{
+                        width:"100%"
+                    }}
+                    onClick={DeleteCourse}
+                >
+                    删除
+                </Button>
+            ),
+        },
+        {
+            key: '3',
+            label: (
+                <Button
+                    style={{
+                        width:"100%"
+                    }}
+                onClick={()=>{
+                    setOpenUpdate(true)
+                }}
+                >
                     编辑
                 </Button>
             ),
         },
         {
-            key: '1',
+            key: '4',
             label: (
-                <Button>
+                <Button
+                    style={{
+                        width:"100%"
+                    }}
+                    onClick={() => {
+                        setOpenArchive(true)}
+                    }
+                >
                     归档
                 </Button>
             ),
@@ -67,6 +140,7 @@ export default ({
         >
             <TopCard
                 onClick={() => {
+                    localStorage.setItem("courseId",id)
                     navigate(`${url}`, {replace: true})
                 }}
                 style={{
@@ -74,16 +148,24 @@ export default ({
                 }}
             >
                 <Time>
-                    {time}
+                    {semester}
                 </Time>
                 <CourseTitle>
-                    {title}
+                    {courseName}
                 </CourseTitle>
                 <Classes>
-                    {classes}
+                    {className}
                 </Classes>
                 <QOWrapper>
-                    <QrcodeOutlined/>&nbsp;&nbsp;&nbsp;&nbsp;{classNumber}
+                    <QrcodeOutlined/>&nbsp;&nbsp;&nbsp;&nbsp;{courseCode}
+                </QOWrapper>
+            </TopCard>
+            <div
+                style={{
+                    width: "100%"
+                }}
+            >
+                <RightBottom>
                     <Dropdown className="rightBottom" menu={{items}}>
                         <a onClick={(e) => e.preventDefault()}>
                             <Space>
@@ -91,11 +173,32 @@ export default ({
                             </Space>
                         </a>
                     </Dropdown>
-                </QOWrapper>
-            </TopCard>
-            <BottomCard>
-                成员{studentNumber}人
-            </BottomCard>
+                </RightBottom>
+                <BottomCard>
+                    成员：123人8
+                </BottomCard>
+            </div>
+            <Archive
+                openArchive={openArchive}
+                setOpenArchive={setOpenArchive}
+                id={id}
+            />
+            <UpdataCourse
+                openUpdate={openUpdate}
+                setOpenUpdate={setOpenUpdate}
+                courseDefault={
+                    {
+                        id,
+                        courseName,
+                        className,
+                        courseState,
+                        teacherId,
+                        academicYear,
+                        semester,
+                        courseCode,
+                    }
+                }
+            />
         </Card>
 
     )

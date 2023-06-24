@@ -1,5 +1,4 @@
 import React from "react";
-import "../../../../../MockJS/user"
 import {Button, Checkbox, Form, Input, Menu, MenuProps} from "antd";
 import {Link, useNavigate} from "react-router-dom";
 import axios from "axios";

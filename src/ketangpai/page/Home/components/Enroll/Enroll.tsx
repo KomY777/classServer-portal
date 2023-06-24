@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import {Button, Form, Input, Menu, MenuProps, message} from "antd";
 import {ContentLine, GoLogin, SelectIdentity, TitleSI, Wrapper} from "./styled";
 import {Link, useNavigate} from "react-router-dom";
-import {log} from "util";
+import {Ketangpai_USER_REGISTER} from "../../../../../api/ketangpai/Login/index";
 
 
 interface setStudentNumber {
@@ -16,7 +16,7 @@ interface setStudentNumber {
 export default () => {
 
     const [from] = Form.useForm();
-    const [identity, setIdentity] = useState(0);
+    const [identity, setIdentity] = useState(1);
 
     //对学号表单的控制。
     const [changeStudentNumber, setChangeStudentNumber] = useState<setStudentNumber>({
@@ -29,9 +29,28 @@ export default () => {
     })
 
     const onFinish = (values: any) => {
-        console.log(values)
-        console.log(identity)
-        message.success("注册成功")
+        const user = {
+            username: values.name,
+            password: values.password,
+            identity: identity,
+            name: values.name,
+            number:values.studentNumber,
+        }
+        // console.log(user)
+        if (values.password === values.passwordTwo){
+            Ketangpai_USER_REGISTER(user).then(req => {
+                const {data} = req;
+                console.log(data)
+                if (data.code===200){
+                    message.success("注册成功")
+                }else {
+                    message.success("注册失败")
+                }
+                // console.log(req)
+            })
+        }else {
+            message.error("两次密码输入不一致")
+        }
     };
 
     const onFinishFailed = (errorInfo: any) => {
@@ -41,7 +60,7 @@ export default () => {
         from.resetFields();
         if (value) {
             setIdentity(0)
-            console.log("教师")
+            // console.log("教师")
             setChangeStudentNumber({
                 teacherStyledBorder: {
                     border: "#4285f4 1px solid"
@@ -52,7 +71,7 @@ export default () => {
             })
         } else {
             setIdentity(1)
-            console.log("学生")
+            // console.log("学生")
             setChangeStudentNumber({
                 teacherStyledBorder: {},
                 studentStyledBorder: {
@@ -151,18 +170,30 @@ export default () => {
                 <Form.Item
                     label=""
                     name="studentNumber"
-                    style={{
-                        display: `${changeStudentNumber.isHave}`
-                    }}
+                    // style={{
+                    //     display: `${changeStudentNumber.isHave}`
+                    // }}
                     rules={[
                         {
                             required: changeStudentNumber.isRequired,
-                            message: '请输入学号!',
+                            message: '请输入学号/教职工号',
                         },
                     ]}
                 >
-                    <Input placeholder="请输入学号"/>
+                    <Input placeholder="请输入学号/教职工号"/>
                 </Form.Item>
+                {/*<Form.Item*/}
+                {/*    label=""*/}
+                {/*    name="Captcha"*/}
+                {/*    rules={[*/}
+                {/*        {*/}
+                {/*            required: changeStudentNumber.isRequired,*/}
+                {/*            message: '请输入验证码!',*/}
+                {/*        },*/}
+                {/*    ]}*/}
+                {/*>*/}
+                {/*    <Input placeholder="请输入验证码"/>*/}
+                {/*</Form.Item>*/}
                 <Button
                     type="primary"
                     className="ButtonEnroll"
