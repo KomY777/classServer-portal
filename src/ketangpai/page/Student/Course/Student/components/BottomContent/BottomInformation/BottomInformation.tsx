@@ -1,8 +1,56 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {ButtonInformation, Description, Wrapper} from "./styled";
+import {Ketangpai_COURSE_GETONECOURSE} from "../../../../../../../../api/ketangpai/CourseManagement";
+
+
+
+
+interface courseData{
+    title:string,
+    classNumber:string,
+    courseCode:string,
+    academicYear:string,
+    semester:string,
+
+}
+
+
+
 
 
 export default () => {
+
+
+
+
+    const [courseDataTop,setCourseDataTop] = useState<courseData>({
+        title:"",
+        classNumber:"",
+        courseCode:"",
+        academicYear:"",
+        semester:""
+    })
+
+
+    useEffect(()=>{
+        Ketangpai_COURSE_GETONECOURSE(localStorage.getItem("courseId")).then(req=>{
+            const {data} = req
+            if (data.code==200){
+                setCourseDataTop({
+                    title:data.data.courseName,
+                    classNumber:data.data.className,
+                    courseCode:data.data.courseCode,
+                    academicYear:data.data.academicYear,
+                    semester:data.data.semester
+                })
+            }
+        })
+    },[])
+
+
+
+
+
     return (
         <Wrapper>
             <ButtonInformation>
@@ -32,7 +80,7 @@ export default () => {
                         >
                             课程名称
                         </div>
-                        python程序设计与数据分析
+                        {courseDataTop.title}
                     </div>
                     <div
                         className="line"
@@ -42,7 +90,7 @@ export default () => {
                         >
                             教学班级
                         </div>
-                        121230201,02,03,04
+                        {courseDataTop.classNumber}
                     </div>
                     <div
                         className="line"
@@ -52,7 +100,7 @@ export default () => {
                         >
                             学年-学期
                         </div>
-                        2022-2023 第二学期
+                        {courseDataTop.academicYear}-{courseDataTop.semester}
                     </div>
                 </div>
             </Description>

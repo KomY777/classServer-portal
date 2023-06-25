@@ -47,9 +47,8 @@ export default ({
 
     const DeleteCourse=()=>{
         Ketangpai_COURSE_REMOVECOURSE(id,`${localStorage.getItem("userId")}`).then(req=>{
-            console.log(req)
+            window.location.reload()
         })
-        window.location.reload()
     }
     const makeTop = () =>{
         const Course = {
@@ -64,10 +63,8 @@ export default ({
 
         }
         Ketangpai_COURSE_UPDATECOURSE(Course).then(req=>{
-            console.log(req.data.code)
-            // if (req.data.data.code){}
+            window.location.reload()
         })
-        window.location.reload()
     }
 
     const items: MenuProps['items'] = [
@@ -174,9 +171,6 @@ export default ({
                         </a>
                     </Dropdown>
                 </RightBottom>
-                <BottomCard>
-                    成员：123人8
-                </BottomCard>
             </div>
             <Archive
                 openArchive={openArchive}

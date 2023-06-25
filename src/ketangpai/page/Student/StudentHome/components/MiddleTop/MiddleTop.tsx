@@ -1,9 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import {Button, Card, Collapse, Form, Input, message, Modal} from 'antd';
 import {HeaderBottomLeft, HeaderBottomRight, HeaderBottomWrapper, Wrapper} from "./styled";
-import classImg from "../../../../../../Static/img.png";
 import ClassCard from "../../../../../components/ClassCardStudent/ClassCardStudent";
-import {Ketangpai_COURSE_GETCOURSE} from "../../../../../../api/ketangpai/CourseManagement";
+import {
+    Ketangpai_STUDENTCOURSE_GETCOURSE,
+    Ketangpai_STUDENTCOURSE_JOINCOURSE
+} from "../../../../../../api/ketangpai/StudentCourse";
 
 
 export interface cardData {
@@ -14,6 +16,7 @@ export interface cardData {
     teacherId: string,
     academicYear: string,
     semester: string,
+    teacherName:string,
     courseCode: string,
 }
 
@@ -37,8 +40,14 @@ const HeaderBottom = () => {
 
     // 表单验证成功
     const onFinish = (values: any) => {
-        console.log('Success:', values);
-        message.success("加入课程成功")
+        Ketangpai_STUDENTCOURSE_JOINCOURSE(localStorage.getItem("userId"),values.courseCode).then(req=>{
+            const {data} = req
+            if (data.code==200){
+                message.success("加入课程成功")
+            }else {
+                message.error("加入失败")
+            }
+        })
         setIsModalOpen(false)
     };
 
@@ -109,13 +118,13 @@ export default () => {
 
     //根据学生id获取课程信息
     useEffect(() => {
-        Ketangpai_COURSE_GETCOURSE(1).then(req => {
+        Ketangpai_STUDENTCOURSE_GETCOURSE(localStorage.getItem("userId")).then(req => {
             const {data} = req;
             if (data.code == 200){
                 const temp:Array<cardData>=[]
                 data.data.map((item:cardData)=>{
                     // @ts-ignore
-                    if (item.courseState === 0){
+                    if (item.courseState === 1){
                         temp.push(item)
                     }
                 })
@@ -144,12 +153,14 @@ export default () => {
                             id={item.id}
                             courseName={item.courseName}
                             className={item.className}
+                            teacherName={item.teacherName}
                             courseState={item.courseState}
                             teacherId={item.teacherId}
                             academicYear={item.academicYear}
                             semester={item.semester}
                             courseCode={item.courseCode}
                             url={"/student/course/learn"}
+                            isTop={false}
                         />
                     ))}
                 </Panel>

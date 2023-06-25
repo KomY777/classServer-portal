@@ -5,6 +5,7 @@ import {QrcodeOutlined} from "@ant-design/icons";
 import ClassCard from "../../../../../components/ClassCardStudent/ClassCardStudent";
 import classImg from "../../../../../../Static/img.png";
 import {Ketangpai_COURSE_GETCOURSE} from "../../../../../../api/ketangpai/CourseManagement";
+import {Ketangpai_STUDENTCOURSE_GETCOURSE} from "../../../../../../api/ketangpai/StudentCourse";
 
 
 const {Panel} = Collapse;
@@ -17,6 +18,7 @@ export interface cardData {
     teacherId: string,
     academicYear: string,
     semester: string,
+    teacherName:string,
     courseCode: string,
 }
 
@@ -29,7 +31,9 @@ export default () => {
 
 
     useEffect(() => {
-        Ketangpai_COURSE_GETCOURSE(1).then(req => {
+        // console.log(localStorage.getItem("userId"))
+        Ketangpai_STUDENTCOURSE_GETCOURSE(localStorage.getItem("userId")).then(req => {
+
             const {data} = req;
             if (data.code == 200){
                 const temp:Array<cardData>=[]
@@ -54,18 +58,20 @@ export default () => {
                 accordion
                 // bordered={false}
             >
-                <Panel header="2022-2023 第二学期" key="1">
+                <Panel header="课程" key="1">
                     {topDatas.map((item)=>(
                         <ClassCard
                             id={item.id}
                             courseName={item.courseName}
                             className={item.className}
+                            teacherName={item.teacherName}
                             courseState={item.courseState}
                             teacherId={item.teacherId}
                             academicYear={item.academicYear}
                             semester={item.semester}
                             courseCode={item.courseCode}
                             url={"/student/course/learn"}
+                            isTop={true}
                         />
                     ))}
                 </Panel>

@@ -1,13 +1,34 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import imgWork from "../../../../../../Static/img_1.png";
 import {BottomFrame, CodeImg, Description, DescriptionRight, LeftButton, TitleByCourse} from "./styled";
 import {Button, Divider, Form, Input, Upload, UploadProps} from "antd";
 import {UploadOutlined} from "@ant-design/icons";
+import {Ketangpai_STUDENTHOMEWORK_CORRECTING} from "../../../../../../api/ketangpai/HomeWork";
 
 
+
+interface homework{
+    title:string,
+    endTime:string,
+}
 
 export default () => {
+    const [homeWorkData,setHomeWorkData] = useState<homework>({
+        title:"",
+        endTime:"",
+    });
 
+    useEffect(()=>{
+        Ketangpai_STUDENTHOMEWORK_CORRECTING(`${localStorage.getItem("homeworkId")}`).then(req=>{
+            if (req.data.code == 200){
+                const dataA = req.data.data
+                setHomeWorkData({
+                    title:dataA.title,
+                    endTime:dataA.endTime,
+                })
+            }
+        })
+    },[])
 
     return (
         <div>
@@ -23,14 +44,14 @@ export default () => {
                     <div>作业</div>
                 </CodeImg>
                 <DescriptionRight>
-                    <TitleByCourse>1.安装Python和Jupyter</TitleByCourse>
+                    <TitleByCourse>{homeWorkData.title}</TitleByCourse>
                     <Description>
                         <Button
                             className="buttonD"
                         >个人作业</Button>
                         <Button
                             className="buttonD"
-                        >提交起止时间： 23/02/22 09:40~23/02/28 23:59 </Button>
+                        >提交起止时间：{homeWorkData.endTime}</Button>
                         <Button
                             className="unButtonD"
                         >100分</Button>
@@ -74,11 +95,7 @@ export default () => {
                 <div>
                     <Upload
                         onChange={file=>{
-                            console.log(file)
                         }}
-                        // onDownload={file => {
-                        //     console.log(JSON.stringify(file))
-                        // }}
                     >
                         <Button icon={<UploadOutlined/>}>Upload</Button>
                     </Upload>

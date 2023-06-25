@@ -1,8 +1,11 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {Col, Menu, message, Modal, Row} from "antd";
 import type {MenuProps} from 'antd';
 import {LeftDiv, RightDiv, Wrapper} from "./styled";
 import CourseCard from "./components/CourseCard";
+import {cardData} from "../../../../../../Teacher/TeacherHome/components/MiddleTop/MiddleTop";
+import {Ketangpai_COURSE_GETCOURSE} from "../../../../../../../../api/ketangpai/CourseManagement";
+import {Ketangpai_STUDENTCOURSE_GETCOURSE} from "../../../../../../../../api/ketangpai/StudentCourse";
 
 
 interface Props {
@@ -17,11 +20,30 @@ export default (
         setOpenArchive,
     }: Props
 ) => {
+    const [pigeonhole, setPigeonhole] = useState<Array<cardData>>([]);
 
+
+    //根据学生id获取课程信息
+    useEffect(() => {
+        // console.log(localStorage.getItem("userId"))
+        Ketangpai_STUDENTCOURSE_GETCOURSE(localStorage.getItem("userId")).then(req => {
+            const {data} = req;
+            if (data.code == 200){
+                const temp:Array<cardData>=[]
+                data.data.map((item:cardData)=>{
+                    // @ts-ignore
+                    if (item.courseState === 3||item.courseCode==2){
+                        temp.push(item)
+                    }
+                })
+                setPigeonhole([...temp])
+            }
+        })
+    },[])
 
     const items: MenuProps['items'] = [
         {
-            label: '2022-2023 第二学期',
+            label: '课程',
             key: '1',
         },
         {
@@ -56,18 +78,18 @@ export default (
             <Wrapper>
                 <LeftDiv>
                     <Menu
-                        items={items}
+                        // items={items}
                     />
                 </LeftDiv>
                 <RightDiv>
-                    <CourseCard/>
-                    <CourseCard/>
-                    <CourseCard/>
-                    <CourseCard/>
-                    <CourseCard/>
-                    <CourseCard/>
-                    <CourseCard/>
-                    <CourseCard/>
+                    {pigeonhole.map((item)=>(
+                        <CourseCard
+                            id={item.id}
+                            classNumber={item.className}
+                            title={item.courseName}
+                            courseCode={item.courseCode}
+                        />
+                    ))}
                 </RightDiv>
             </Wrapper>
         </Modal>

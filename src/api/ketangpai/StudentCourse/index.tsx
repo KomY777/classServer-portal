@@ -3,6 +3,32 @@ import axios from "axios";
 
 
 /**
+ * 课程归档
+ * @param id
+ * @param state
+ * @constructor
+ */
+
+function Ketangpai_STUDENTCOURSE_ARCHIVE(id:any,state:any){
+    return(
+        axios.get(
+            "/api/studentCourse/archive",
+            {
+                params:{
+                    id:id,
+                    state:state,
+                }
+            }
+        )
+    )
+}
+
+
+
+
+
+
+/**
  * 退出课程
  * @param courseId
  * @constructor
@@ -20,18 +46,20 @@ function Ketangpai_STUDENTCOURSE_EXITCOURSE(courseId:any){
     )
 }
 
-
 /**
- * 加入课程
- * @param studentCourse
+ * 获取课程信息
+ * @param id
  * @constructor
  */
-function Ketangpai_STUDENTCOURSE_JOINCOURSE(studentCourse:any){
+
+function Ketangpai_STUDENTCOURSE_GETCOURSE(id:any){
     return(
-        axios.post(
-            "/api/studentCourse/joinCourse",
+        axios.get(
+            "/api/studentCourse/getCourse",
             {
-                studentCourseDto:studentCourse
+                params:{
+                    id:id
+                }
             }
         )
     )
@@ -39,7 +67,31 @@ function Ketangpai_STUDENTCOURSE_JOINCOURSE(studentCourse:any){
 
 
 
+
+
+/**
+ * 加入课程
+ * @param studentCourse
+ * @constructor
+ */
+function Ketangpai_STUDENTCOURSE_JOINCOURSE(studentCourse:any,courseCode:any){
+    return(
+        axios.post(
+            "/api/studentCourse/joinCourse",
+            {
+                studentId:studentCourse,
+                coruseCode:courseCode,
+            }
+        )
+    )
+}
+
+
+
+
 export {
+    Ketangpai_STUDENTCOURSE_ARCHIVE,
     Ketangpai_STUDENTCOURSE_EXITCOURSE,
+    Ketangpai_STUDENTCOURSE_GETCOURSE,
     Ketangpai_STUDENTCOURSE_JOINCOURSE,
 }

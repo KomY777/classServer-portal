@@ -26,7 +26,6 @@ function getItem(
 const items: MenuItem[] = [
     getItem('课程学习', '/student/course/Learn'),
     getItem('课程介绍', '/student/course/Information'),
-    // getItem('成绩管理', '/student/course/Learn'),
 ];
 
 export default () => {

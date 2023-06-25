@@ -35,6 +35,7 @@ export default (
 
 
     const handleCancel = () => {
+        from.resetFields()
         setOpenCreateCourse(false);
     };
 
@@ -53,13 +54,12 @@ export default (
             const {data} = req
             if (data.code == 200){
                 message.success("创建课程成功")
-                console.log('Success:', Course)
             }else {
                 message.error("创建课程失败")
             }
-            console.log(req.data)
         })
         setOpenCreateCourse(false)
+        window.location.reload()
     };
 
 

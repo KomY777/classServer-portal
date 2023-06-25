@@ -6,6 +6,7 @@ const gridStyle: React.CSSProperties = {
     padding:"10px",
     // backgroundColor:'red',
     // border:"1px green solid",
+    display:"inline-block",
     whiteSpace:"pre-wrap",
 };
 
@@ -22,9 +23,38 @@ const DivImg = styled.div`
   color: white;
 `
 
+const Recover = styled.button`
+  width: 50px;
+  height: 30px;
+  //color: greenyellow;
+  background-color: white;
+  border: 0px;
+`
+
+const Delete = styled.button`
+  width: 50px;
+  height: 30px;
+  color: red;
+  background-color: white;
+  border: 0px;
+  margin-right: 50px;
+  margin: auto;
+`
+
+
+const Operate=styled.div`
+  //display: inline-block;
+  float: right;
+  width: 20%;
+  //display: block;
+`
+
 
 
 export {
     gridStyle,
     DivImg,
+    Recover,
+    Delete,
+    Operate,
 }

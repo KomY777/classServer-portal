@@ -1,10 +1,36 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {Description, LeftButton} from "./styled";
 import {Button} from "antd";
+import {Ketangpai_STUDENTHOMEWORK_CORRECTING} from "../../../../../../api/ketangpai/HomeWork";
 
-
+interface homework{
+    title:string,
+    endTime:string,
+    descript:string,
+}
 
 export default ()=>{
+
+    const [homeWorkData,setHomeWorkData] = useState<homework>({
+        title:"",
+        endTime:"",
+        descript:""
+    });
+
+    useEffect(()=>{
+        Ketangpai_STUDENTHOMEWORK_CORRECTING(`${localStorage.getItem("homeworkId")}`).then(req=>{
+            if (req.data.code == 200){
+                const dataA = req.data.data
+                setHomeWorkData({
+                    title:dataA.title,
+                    endTime:dataA.endTime,
+                    descript:dataA.remark,
+                })
+            }
+        })
+    },[])
+
+
     return(
         <Description>
             <LeftButton>
@@ -17,7 +43,8 @@ export default ()=>{
                 <div
                     className="titleD"
                 >
-                    1.安装Python和jupyter
+                    {/*1.安装Python和jupyter*/}
+                    {homeWorkData.title}
                 </div>
                 <div>
                     <Button
@@ -28,12 +55,12 @@ export default ()=>{
                     <Button
                         className="buttonD"
                     >
-                        提交起止时间： 23/02/22 09:40~23/02/28 23:59
+                        提交起止时间:{homeWorkData.endTime}
                     </Button>
                 </div>
-                <div>1.任务：安装Python和Jupyter。</div>
-                <div>2.课堂派提交：两个的安装过程描述（要求格式规范，层次清楚，逻辑合理）。注意提交word附件页面的顶端标</div>
-                <div>3.根.据【资料】【jupyter课件】中的下面三个文件指导安装：</div>
+                <div>
+                    {homeWorkData.descript}
+                </div>
             </div>
         </Description>
     )

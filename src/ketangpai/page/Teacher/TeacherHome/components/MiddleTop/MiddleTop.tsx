@@ -89,13 +89,10 @@ export default () => {
 
     const [topDatas, setTopDatas] = useState<Array<cardData>>([]);
 
-
     //根据学生id获取课程信息
     useEffect(() => {
-        // console.log(localStorage.getItem("userId"))
         Ketangpai_COURSE_GETCOURSE(localStorage.getItem("userId")).then(req => {
             const {data} = req;
-            console.log(data)
             if (data.code == 200){
                 const temp:Array<cardData>=[]
                 data.data.map((item:cardData)=>{
@@ -111,7 +108,6 @@ export default () => {
 
 
     const onChange = (key: string | string[]) => {
-        console.log(key);
     };
 
 

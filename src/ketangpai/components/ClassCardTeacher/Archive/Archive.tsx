@@ -17,19 +17,18 @@ export default (
     }:Props
 ) => {
 
-
     const handleCancel = () => {
         setOpenArchive(false);
     };
 
     const ArchiveMe = ()=>{
-        Ketangpai_COURSE_ARCHIVEME(id).then(req=>{
-            console.log(req)
+        Ketangpai_COURSE_ARCHIVEME(id,3).then(req=>{
+            window.location.reload()
         })
     }
     const ArchiveAll = ()=>{
         Ketangpai_COURSE_ARCHIVEALL(id).then(req=>{
-            console.log(req)
+            window.location.reload()
         })
     }
     return (
@@ -39,7 +38,6 @@ export default (
             open={openArchive}
             footer={null}
             destroyOnClose={true}
-            // cancelText="a"
             centered={true}
         >
             <Button

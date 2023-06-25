@@ -52,7 +52,7 @@ const LeftButton=styled.div`
 const BottomFrame=styled.div`
   border: black 1px solid;
   font-size: 16px;
-  height: 200px;
+  height: 300px;
   padding: 20px;
   background-color: #f8f9fa;
   .LineTop{

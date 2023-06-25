@@ -1,14 +1,21 @@
 import React, {useState} from "react";
-import {Button, DatePicker, Form, Input, Radio, message, Modal, Select, Switch} from "antd";
+import {Upload, Button, DatePicker, Form, Input, Radio, message, Modal, Select, Switch, UploadProps} from "antd";
 import {Ketangpai_COURSE_ADDCOURSE} from "../../../../../../../../../api/ketangpai/CourseManagement";
 import TextArea from "antd/es/input/TextArea";
-import type {DatePickerProps, RadioChangeEvent} from 'antd';
 import Dragger from "antd/es/upload/Dragger";
-import {InboxOutlined} from "@ant-design/icons";
+import {InboxOutlined, UploadOutlined} from "@ant-design/icons";
 import {Ketangpai_STUDENTHOMEWORK_CREATHOMEWORK} from "../../../../../../../../../api/ketangpai/HomeWork";
 import moment from 'moment';
 import 'moment/locale/zh-cn';
+import type {RcFile, UploadFile} from 'antd/es/upload/interface';
+import LocaleProvider from "antd/es/locale";
+import zh_CN from 'antd/lib/locale/zh_CN'
+import axios from "axios";
+// import {  } from 'antd';
+
+
 moment.locale('zh-cn');
+
 
 const {RangePicker} = DatePicker;
 
@@ -29,6 +36,10 @@ export default (
     const [from] = Form.useForm();
     const [addTime, setAddTime] = useState("none")
     const [homeworkState, setHomeworkState] = useState("0")
+    const [time, setTime] = useState({
+        startTime: "",
+        endTime: ""
+    })
 
     const changeTime = () => {
         if (addTime === "none") {
@@ -47,31 +58,62 @@ export default (
     // 表单验证成功
     const onFinish = (values: any) => {
         const Course = {
-            // courseId:
-            title: values.CourseName,
-            className: values.teachingClass,
-            courseState: 0,
-            teacherId: Number(localStorage.getItem("userId")),
-            semester: values.semester,
-            academicYear: values.selectSchoolYear,
+            courseId: localStorage.getItem("courseId"),
+            homeworkState: homeworkState,
+            title: values.title,
+            remark: values.remark,
+            startTime: time.startTime,
+            endTime: time.endTime
         }
-
         Ketangpai_STUDENTHOMEWORK_CREATHOMEWORK(Course).then(req => {
             const {data} = req
             if (data.code == 200) {
                 message.success("添加作业成功")
-                console.log('Success:', Course)
             } else {
                 message.error("添加作业失败")
             }
-            console.log(req.data)
         })
+        window.location.reload()
         setOpenCreateCourse(false)
     };
 
-    const onChangeFile=(info:any)=> {
-        console.log(info.fileList[0].name)
+    const onChangeFile = (info: any) => {
     }
+
+    const [fileUrl, setFileUrl] = useState<any>("")
+    const [fileList, setFileList] = useState<any>({});
+    const handleUpload = () => {
+        // console.log(fileList.length)
+        if (fileList.length) {
+            axios.post(
+                "/api/studentHomework/upload",
+                {
+                    file: fileList
+                },
+                {
+                    headers: {'Content-Type': 'multipart/form-data'},
+                }
+            ).then(req => {
+                // console.log(req)
+                setFileUrl(req)
+            })
+        }
+    };
+
+    const props: UploadProps = {
+        onRemove: (file) => {
+            const index = fileList.indexOf(file);
+            const newFileList = fileList.slice();
+            newFileList.splice(index, 1);
+            setFileList(newFileList);
+        },
+        beforeUpload: (file) => {
+            setFileList(file);
+            return false;
+        },
+    };
+
+
     return (
         <Modal
             onCancel={handleCancel}
@@ -91,7 +133,7 @@ export default (
                 onFinish={onFinish}
             >
                 <Form.Item
-                    name="CourseName"
+                    name="title"
                     label="作业标题"
                     validateFirst={true}
 
@@ -102,22 +144,20 @@ export default (
                     <Input showCount maxLength={50} placeholder=""/>
                 </Form.Item>
                 <Form.Item
-                    name="addClassCode"
+                    name="remark"
                     label="备注"
                     validateFirst={true}
                 >
                     <TextArea showCount maxLength={200} placeholder=""/>
                 </Form.Item>
                 <div>
-                    <Dragger
-                    onChange={(e)=>onChangeFile(e)}
-                    >
-                        <p className="ant-upload-drag-icon">
-                            <InboxOutlined/>
-                        </p>
-                        <p className="ant-upload-text">请点击选择上传文件</p>
-                    </Dragger>
-
+                    <>
+                        <Upload {...props}>
+                            <Button icon={<UploadOutlined/>}>选择文件</Button>
+                        </Upload>
+                    </>
+                </div>
+                <div>
                     <Switch
                         style={{
                             margin: "10px 0px"
@@ -127,21 +167,29 @@ export default (
                         unCheckedChildren="未发布"
                         defaultChecked={false}
                     />
-                    <RangePicker
-                        style={{
-                            width: "100%",
-                            display: `${addTime}`
-                        }}
-                        showTime={{format: 'HH:mm'}}
-                        // format="yyyy-MM-dd HH:mm:ss"
-                        format="YYYY-MM-DD HH:mm:ss"
-                        onChange={(e) => {
-                            // @ts-ignore
-                            console.log(moment(e._d).format("YYYY-MM-DD HH:mm:ss"))
-
-                        }
-                        }
-                    />
+                    <LocaleProvider locale={zh_CN}>
+                        <RangePicker
+                            style={{
+                                width: "100%",
+                                display: `${addTime}`
+                            }}
+                            showTime={{format: 'HH:mm'}}
+                            format="YYYY-MM-DD HH:mm:ss"
+                            onChange={(e) => {
+                                let timeOne = ""
+                                let timeTwo = ""
+                                // @ts-ignore
+                                timeOne = `${e[0].$y}-${e[0].$M + 1}-${e[0].$D} ${e[0].$H}:${e[0].$m}:${e[0].$s}`;
+                                // @ts-ignore
+                                timeTwo = `${e[1].$y}-${e[1].$M + 1}-${e[1].$D} ${e[1].$H}:${e[1].$m}:${e[1].$s}`;
+                                setTime({
+                                    startTime: timeOne,
+                                    endTime: timeTwo
+                                })
+                            }
+                            }
+                        />
+                    </LocaleProvider>
                 </div>
                 <Form.Item style={{
                     marginLeft: "130px"
@@ -154,6 +202,7 @@ export default (
                     </Button>
                     <Button
                         style={{marginLeft: "50px"}}
+                        onClick={handleUpload}
                         htmlType="submit"
                         type="primary"
                     >

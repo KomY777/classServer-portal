@@ -5,6 +5,7 @@ import {Wrapper} from "./styled";
 import {Route, Routes, useNavigate} from "react-router-dom";
 import Detail from "./components/Detail";
 import SubmitJob from "./components/SubmitJob";
+import StudentInformatoin from "./components/StudentInformatoin";
 
 
 export default () => {
@@ -22,8 +23,8 @@ export default () => {
             key: '/teacher/homeWork/detail',
         },
         {
-            label: '批改作业',
-            key: '/teacher/homeWork/SubmitJob',
+            label: '学生提交作业',
+            key: '/teacher/homeWork/all',
         },
     ];
 
@@ -44,6 +45,7 @@ export default () => {
             <Routes>
                 <Route path="detail" element={<Detail/>}/>
                 <Route path="submitJob" element={<SubmitJob/>}/>
+                <Route path="all" element={<StudentInformatoin/>} />
             </Routes>
         </Wrapper>
     )

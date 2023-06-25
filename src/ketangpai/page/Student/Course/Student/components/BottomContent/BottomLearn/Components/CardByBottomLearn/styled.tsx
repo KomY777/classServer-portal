@@ -11,6 +11,7 @@ const Wrapper = styled.div`
 `
 
 const TitleByCourse = styled.div`
+  width: fit-content;
   font-size: 20px;
 `
 const Description = styled.div`

@@ -42,6 +42,16 @@ const MyselfWork = styled.div`
     margin-right: 10px;
   }
 `
+const MyUpdate = styled.div`
+  display: inline-block;
+  &:before{
+    content: "|";
+    color: #DCDFE6;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+`
+
 
 const CodeImg = styled.div`
   width: 80px;
@@ -72,4 +82,5 @@ export {
     DescriptionRight,
     MyselfWork,
     StateCode,
+    MyUpdate,
 }

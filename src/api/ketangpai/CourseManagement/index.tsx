@@ -49,13 +49,14 @@ function Ketangpai_COURSE_ARCHIVEALL(userId:any){
  * @constructor
  */
 
-function Ketangpai_COURSE_ARCHIVEME(userId:any){
+function Ketangpai_COURSE_ARCHIVEME(userId:any,state:any){
     return(
         axios.get(
             "/api/course/archiveMe",
             {
                 params:{
-                    id:userId
+                    id:userId,
+                    state:state,
                 }
             }
         )
@@ -101,6 +102,26 @@ function Ketangpai_COURSE_GETCOURSECODE(course:any){
         )
     )
 }
+
+
+
+
+function Ketangpai_COURSE_GETONECOURSE(id:any){
+    return(
+        axios.get(
+            "/api/course/getOneCourse",
+            {
+                params:{
+                    id:id
+                }
+            }
+        )
+    )
+}
+
+
+
+
 
 
 /**
@@ -187,4 +208,6 @@ export {
      * @constructor
      */
     Ketangpai_COURSE_ARCHIVEME,
+
+    Ketangpai_COURSE_GETONECOURSE
 }

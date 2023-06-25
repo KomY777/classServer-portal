@@ -21,7 +21,7 @@ export interface cardData {
 
 export default () => {
     const onChange = (key: string | string[]) => {
-        console.log(key);
+        // console.log(key);
     };
 
     const [topDatas, setTopDatas] = useState<Array<cardData>>([]);
@@ -52,7 +52,7 @@ export default () => {
                 onChange={onChange}
                 accordion
             >
-                <Panel header="2022-2023 第二学期" key="1">
+                <Panel header="课程" key="1">
                     {topDatas.map((item)=>(
                         <ClassCardTeacher
                             id={item.id}

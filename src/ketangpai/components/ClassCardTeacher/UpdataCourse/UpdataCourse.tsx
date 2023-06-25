@@ -78,9 +78,8 @@ export default (
             academicYear:values.selectSchoolYear,
             semester:values.semester
         }
-        console.log(course)
         Ketangpai_COURSE_UPDATECOURSE(course).then(req=>{
-            console.log(req)
+            window.location.reload()
         })
     };
 
@@ -95,7 +94,6 @@ export default (
             cancelText="a"
             centered={true}
         >
-            {/*<div>基本信息</div>*/}
             <Form
                 form={from}
                 onFinish={onFinish}

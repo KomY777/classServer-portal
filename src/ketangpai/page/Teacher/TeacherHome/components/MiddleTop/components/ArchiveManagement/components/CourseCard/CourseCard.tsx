@@ -10,7 +10,6 @@ export default ()=>{
         <Card.Grid
         style={gridStyle}
         >
-            {/*aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa*/}
             <DivImg></DivImg>
         </Card.Grid>
     )

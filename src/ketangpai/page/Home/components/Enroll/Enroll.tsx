@@ -36,7 +36,6 @@ export default () => {
             name: values.name,
             number:values.studentNumber,
         }
-        // console.log(user)
         if (values.password === values.passwordTwo){
             Ketangpai_USER_REGISTER(user).then(req => {
                 const {data} = req;
