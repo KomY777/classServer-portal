@@ -46,9 +46,9 @@ function Ketangpai_USER_REGISTER(User:any){
             "/api/user/register",
             {
                 identity:User.identity,
-                name:User.name,
+                name:User.username,
                 password:User.password,
-                username:User.userName,
+                username:User.username,
                 number:User.number
             }
         )
