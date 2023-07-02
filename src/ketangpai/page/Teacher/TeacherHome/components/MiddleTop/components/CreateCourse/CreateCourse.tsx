@@ -45,11 +45,10 @@ export default (
             "courseName": values.CourseName,
             "className": values.teachingClass,
             "courseState": 0,
-            "teacherId": Number(localStorage.getItem("userId")),
+            "teacherId": localStorage.getItem("userId"),
             "semester": values.semester,
             "academicYear": values.selectSchoolYear,
         }
-
         Ketangpai_COURSE_ADDCOURSE(Course).then(req=>{
             const {data} = req
             if (data.code == 200){
@@ -59,7 +58,7 @@ export default (
             }
         })
         setOpenCreateCourse(false)
-        window.location.reload()
+        // window.location.reload()
     };
 
 

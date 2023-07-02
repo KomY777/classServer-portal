@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import {Button, Form, Input, Menu, MenuProps, message} from "antd";
 import {ContentLine, GoLogin, SelectIdentity, TitleSI, Wrapper} from "./styled";
 import {Link, useNavigate} from "react-router-dom";
-import {Ketangpai_USER_REGISTER} from "../../../../../api/ketangpai/Login/index";
+import {Ketangpai_USER_REGISTER, Ketangpai_USER_SENDMAIL} from "../../../../../api/ketangpai/Login/index";
 
 
 interface setStudentNumber {
@@ -16,8 +16,8 @@ interface setStudentNumber {
 export default () => {
 
     const [from] = Form.useForm();
-    const [identity, setIdentity] = useState(1);
-
+    const [identity, setIdentity] = useState(0);
+    const [captcha,setCaptcha] = useState(undefined);
     //对学号表单的控制。
     const [changeStudentNumber, setChangeStudentNumber] = useState<setStudentNumber>({
         teacherStyledBorder: {
@@ -30,25 +30,31 @@ export default () => {
 
     const onFinish = (values: any) => {
         const user = {
-            username: values.name,
+            username: values.userName,
             password: values.password,
             identity: identity,
             name: values.name,
             number:values.studentNumber,
         }
-        if (values.password === values.passwordTwo){
-            Ketangpai_USER_REGISTER(user).then(req => {
-                const {data} = req;
-                console.log(data)
-                if (data.code===200){
-                    message.success("注册成功")
-                }else {
-                    message.success("注册失败")
-                }
-                // console.log(req)
-            })
+        console.log(values)
+        console.log(captcha)
+        if (values.Captcha === captcha){
+            if (values.password === values.passwordTwo){
+                Ketangpai_USER_REGISTER(user).then(req => {
+                    const {data} = req;
+                    console.log(data)
+                    if (data.code===200){
+                        message.success("注册成功")
+                    }else {
+                        message.error(`注册失败:${data.msg}`)
+                    }
+                    // console.log(req)
+                })
+            }else {
+                message.error("两次密码输入不一致")
+            }
         }else {
-            message.error("两次密码输入不一致")
+            message.error("输入验证码错误")
         }
     };
 
@@ -82,6 +88,29 @@ export default () => {
         }
     }
 
+
+    const RequestVerificationCode=()=>{
+        if (from.getFieldValue("userName")){
+            Ketangpai_USER_SENDMAIL(from.getFieldValue("userName")).then(req=>{
+                const {data} = req;
+                if (data.code = 200){
+                    setCaptcha(data.data)
+                    console.log(data.data)
+                    message.success("已发送验证码到指定邮箱，请注意查收")
+                }else {
+                    message.error("请求验证码失败")
+                }
+            })
+        }else {
+            message.error("请输入邮箱")
+        }
+    }
+
+
+
+
+
+
     return (
         <Wrapper>
             <div
@@ -105,6 +134,9 @@ export default () => {
                             required: true,
                             message: '请输入邮箱/手机号!',
                         },
+                        {
+                            pattern:/^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/,message:"格式错误"
+                        }
                     ]}
                 >
                     <Input placeholder="请输入邮箱/手机号"/>
@@ -181,18 +213,37 @@ export default () => {
                 >
                     <Input placeholder="请输入学号/教职工号"/>
                 </Form.Item>
-                {/*<Form.Item*/}
-                {/*    label=""*/}
-                {/*    name="Captcha"*/}
-                {/*    rules={[*/}
-                {/*        {*/}
-                {/*            required: changeStudentNumber.isRequired,*/}
-                {/*            message: '请输入验证码!',*/}
-                {/*        },*/}
-                {/*    ]}*/}
-                {/*>*/}
-                {/*    <Input placeholder="请输入验证码"/>*/}
-                {/*</Form.Item>*/}
+                <Form.Item
+                    label=""
+                    name="Captcha"
+                    rules={[
+                        {
+                            required: changeStudentNumber.isRequired,
+                            message: '请输入验证码!',
+                        },
+                    ]}
+                >
+                    <Input
+                        style={{
+                            width:"230px",
+                            display:"inline-block",
+                            marginRight:"20px"
+                        }}
+                        placeholder="请输入验证码"/>
+                </Form.Item>
+                <Button
+                    style={{
+                        position:"absolute",
+                        top:"522px",
+                        right:"120px",
+                        // marginLeft:"20px",
+                        width:"100px",
+                        display:"inline-block"
+                    }}
+                    onClick={RequestVerificationCode}
+                >
+                    请求验证码
+                </Button>
                 <Button
                     type="primary"
                     className="ButtonEnroll"

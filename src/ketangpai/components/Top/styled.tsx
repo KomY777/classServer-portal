@@ -36,9 +36,7 @@ const Right = styled.div`
   height: 64px;
   float: right;
   display: inline-block;
-  //position:"fixed",
-  //top:"6px",
-  //right:"0px"
+  margin-right: 50px;
 `
 
 

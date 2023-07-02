@@ -46,13 +46,13 @@ const DescriptionRight = styled.div`
 const LeftButton=styled.div`
   font-size: 20px;
   margin: 20px 0px;
-  padding-bottom: 40px;
+  //padding-bottom: 40px;
 `
 
 const BottomFrame=styled.div`
   border: black 1px solid;
   font-size: 16px;
-  height: 300px;
+  height: 550px;
   padding: 20px;
   background-color: #f8f9fa;
   .LineTop{
@@ -61,49 +61,27 @@ const BottomFrame=styled.div`
     line-height: 50px;
     margin-top: 20px;
   }
-  .LineTopLeft{
-    float: left;
-    display: inline-block;
-  }
-  .LineTopRight{
-    width: 20%;
-    text-align: center;
-    display: inline-block;
-    float: right;
-  }
 
-  .LineOneTop{
-    line-height: 50px;
-    //margin-top: 20px;
-  }
-  .LineOneTopLeft{
-    width: 80%;
-    font-size: 14px;
-    min-height: 50px;
-    background-color: white;
-    float: left;
-    //padding-left:20px ;
-    display: inline-block;
-  }
   .LineOneTopRight{
     font-size: 24px;
-    width: 20%;
+    //width: 20%;
     text-align: center;
     display: inline-block;
-    float: right;
+    //float: right;
   }
   
   .workName{
     width: 80px;
-    height: 80px;
-    line-height: 80px;
+    height: 20px;
+    //line-height: 20px;
+    margin-bottom: 20px;
     display: inline-block;
 
   }
   .workNumber{
     width: 80px;
-    height: 80px;
-    line-height: 80px;
+    height: 20px;
+    line-height: 20px;
     font-size: 12px;
     color: #74787c;
     display: inline-block;

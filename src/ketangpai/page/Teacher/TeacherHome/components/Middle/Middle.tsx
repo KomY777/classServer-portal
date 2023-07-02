@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import {Card, Collapse} from 'antd';
+import { Collapse, Empty} from 'antd';
 import {Wrapper} from "./styled";
 import ClassCardTeacher from "../../../../../components/ClassCardTeacher/ClassCardTeacher";
-import classImg from "../../../../../../Static/img.png";
 import {Ketangpai_COURSE_GETCOURSE} from "../../../../../../api/ketangpai/CourseManagement";
+import Login from "../../../../Home/components/Login";
 
 
 const {Panel} = Collapse;
@@ -36,9 +36,11 @@ export default () => {
                 data.data.map((item:cardData)=>{
                     // @ts-ignore
                     if (item.courseState === 0){
+                        //正常显示
                         temp.push(item)
                     }
                 })
+                console.log(temp)
                 setTopDatas([...temp])
             }
         })
@@ -53,20 +55,46 @@ export default () => {
                 accordion
             >
                 <Panel header="课程" key="1">
-                    {topDatas.map((item)=>(
-                        <ClassCardTeacher
-                            id={item.id}
-                            courseName={item.courseName}
-                            className={item.className}
-                            courseState={item.courseState}
-                            teacherId={item.teacherId}
-                            academicYear={item.academicYear}
-                            semester={item.semester}
-                            courseCode={item.courseCode}
-                            url={"/teacher/course/learn"}
-                            isTop={true}
-                        />
-                    ))}
+                    {/*{topDatas.map((item)=>(*/}
+                    {/*    <ClassCardTeacher*/}
+                    {/*        id={item.id}*/}
+                    {/*        courseName={item.courseName}*/}
+                    {/*        className={item.className}*/}
+                    {/*        courseState={item.courseState}*/}
+                    {/*        teacherId={item.teacherId}*/}
+                    {/*        academicYear={item.academicYear}*/}
+                    {/*        semester={item.semester}*/}
+                    {/*        courseCode={item.courseCode}*/}
+                    {/*        url={"/teacher/course/learn"}*/}
+                    {/*        isTop={true}*/}
+                    {/*    />*/}
+                    {/*))}*/}
+
+                    {
+                        topDatas.length !==0?topDatas.map((item) => (
+                            <ClassCardTeacher
+                                id={item.id}
+                                courseName={item.courseName}
+                                className={item.className}
+                                courseState={item.courseState}
+                                teacherId={item.teacherId}
+                                academicYear={item.academicYear}
+                                semester={item.semester}
+                                courseCode={item.courseCode}
+                                url={"/teacher/course/learn"}
+                                isTop={true}
+                            />
+                        )):<Empty description="暂无课程" />
+                    }
+
+
+
+
+
+
+
+
+
                 </Panel>
             </Collapse>
         </Wrapper>

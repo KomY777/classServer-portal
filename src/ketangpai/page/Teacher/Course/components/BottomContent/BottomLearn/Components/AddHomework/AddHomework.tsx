@@ -36,6 +36,7 @@ export default (
     const [from] = Form.useForm();
     const [addTime, setAddTime] = useState("none")
     const [homeworkState, setHomeworkState] = useState("0")
+    const [fileList, setFileList] = useState<any>(null);
     const [time, setTime] = useState({
         startTime: "",
         endTime: ""
@@ -55,36 +56,11 @@ export default (
         setOpenCreateCourse(false);
     };
 
+
+
     // 表单验证成功
     const onFinish = (values: any) => {
-        const Course = {
-            courseId: localStorage.getItem("courseId"),
-            homeworkState: homeworkState,
-            title: values.title,
-            remark: values.remark,
-            startTime: time.startTime,
-            endTime: time.endTime
-        }
-        Ketangpai_STUDENTHOMEWORK_CREATHOMEWORK(Course).then(req => {
-            const {data} = req
-            if (data.code == 200) {
-                message.success("添加作业成功")
-            } else {
-                message.error("添加作业失败")
-            }
-        })
-        window.location.reload()
-        setOpenCreateCourse(false)
-    };
-
-    const onChangeFile = (info: any) => {
-    }
-
-    const [fileUrl, setFileUrl] = useState<any>("")
-    const [fileList, setFileList] = useState<any>({});
-    const handleUpload = () => {
-        // console.log(fileList.length)
-        if (fileList.length) {
+        if (fileList) {
             axios.post(
                 "/api/studentHomework/upload",
                 {
@@ -94,21 +70,60 @@ export default (
                     headers: {'Content-Type': 'multipart/form-data'},
                 }
             ).then(req => {
-                // console.log(req)
-                setFileUrl(req)
+                const Course = {
+                    courseId: localStorage.getItem("courseId"),
+                    homeworkState: homeworkState,
+                    title: values.title,
+                    remark: values.remark,
+                    startTime: time.startTime,
+                    filePath:req.data.data[0],
+                    endTime: time.endTime
+                }
+                Ketangpai_STUDENTHOMEWORK_CREATHOMEWORK(Course).then(req => {
+                    const {data} = req
+                    if (data.code == 200) {
+                        message.success("添加作业成功")
+                    } else {
+                        message.error("添加作业失败")
+                    }
+                })
+                setOpenCreateCourse(false)
+                window.location.reload()
             })
+        }else {
+            const Course = {
+                courseId: localStorage.getItem("courseId"),
+                homeworkState: homeworkState,
+                title: values.title,
+                remark: values.remark,
+                filePath: "",
+                startTime: time.startTime,
+                endTime: time.endTime
+            }
+            Ketangpai_STUDENTHOMEWORK_CREATHOMEWORK(Course).then(req => {
+                const {data} = req
+                if (data.code == 200) {
+                    message.success("添加作业成功")
+                } else {
+                    message.error("添加作业失败")
+                }
+            })
+            setOpenCreateCourse(false)
+            window.location.reload()
         }
     };
 
     const props: UploadProps = {
         onRemove: (file) => {
-            const index = fileList.indexOf(file);
-            const newFileList = fileList.slice();
-            newFileList.splice(index, 1);
-            setFileList(newFileList);
+            // const index = fileList.indexOf(file);
+            // const newFileList = fileList.slice();
+            // newFileList.splice(index, 1);
+            // setFileList(newFileList);
+            setFileList(null);
         },
         beforeUpload: (file) => {
             setFileList(file);
+            console.log(file)
             return false;
         },
     };
@@ -195,14 +210,13 @@ export default (
                     marginLeft: "130px"
                 }}>
                     <Button
-                        htmlType="submit"
+                        // htmlType="submit"
                         onClick={handleCancel}
                     >
                         取消
                     </Button>
                     <Button
                         style={{marginLeft: "50px"}}
-                        onClick={handleUpload}
                         htmlType="submit"
                         type="primary"
                     >

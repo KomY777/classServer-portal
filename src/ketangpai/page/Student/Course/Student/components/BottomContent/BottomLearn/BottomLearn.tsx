@@ -38,6 +38,7 @@ export default () => {
                     item.homeworkState=="1"?temp.push(item):null
                 ))
             }
+            console.log(temp)
             setHomeworkDate(temp)
         })
     }, [])

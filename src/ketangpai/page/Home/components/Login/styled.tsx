@@ -46,7 +46,8 @@ const LoginButton ={
 
 const EnrollUser = styled.div`
   display: inline-block;
-  text-align: right;
+  //text-align: right;
+  float: right;
   margin-right: 20px;
 `
 const EnrollButton = {

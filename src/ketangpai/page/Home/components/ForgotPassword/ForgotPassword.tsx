@@ -124,7 +124,7 @@ export default () => {
                         },
                     ]}
                 >
-                    <Input.Password/>
+                    <Input />
                 </Form.Item>
                 <Button
                     htmlType="submit"

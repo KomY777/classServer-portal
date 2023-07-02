@@ -157,12 +157,12 @@ export default () => {
                     <p style={{display: "inline-block"}}>还没有账号？</p>
                     <Button style={EnrollButton} onClick={onGotoEnroll}>去注册</Button>
                 </EnrollUser>
-                <EnrollUser>
-                    <p style={{display: "inline-block"}}>忘记密码？</p>
-                    <Button style={EnrollButton} onClick={() => {
-                        navigate("/login/forgetPassword", {replace: true})
-                    }}>找回密码</Button>
-                </EnrollUser>
+                {/*<EnrollUser>*/}
+                {/*    <p style={{display: "inline-block"}}>忘记密码？</p>*/}
+                {/*    <Button style={EnrollButton} onClick={() => {*/}
+                {/*        navigate("/login/forgetPassword", {replace: true})*/}
+                {/*    }}>找回密码</Button>*/}
+                {/*</EnrollUser>*/}
             </Form>
         </Wrapper>
     )

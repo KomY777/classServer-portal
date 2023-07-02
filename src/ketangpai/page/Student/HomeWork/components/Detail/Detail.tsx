@@ -1,7 +1,9 @@
 import React, {useEffect, useState} from "react";
 import {Description, LeftButton} from "./styled";
-import {Button} from "antd";
+import {Button, Input} from "antd";
 import {Ketangpai_STUDENTHOMEWORK_CORRECTING} from "../../../../../../api/ketangpai/HomeWork";
+import {UploadOutlined} from "@ant-design/icons";
+import axios from "axios";
 
 interface homework{
     title:string,
@@ -10,7 +12,19 @@ interface homework{
 }
 
 export default ()=>{
-
+    const downloadFile = () => {
+        window.open("F:/title.docx")
+        // const file_path = 'tle'
+        // const URL = 'F:/title.docx'
+        // // 创建a标签
+        // let a= document.createElement("a");
+        // // 设置下载文件的文件名
+        // a.download = file_path;
+        // // 设置下载文件url
+        // a.href = URL;
+        // // 设置点击事件
+        // a.click();
+    }
     const [homeWorkData,setHomeWorkData] = useState<homework>({
         title:"",
         endTime:"",
@@ -29,6 +43,21 @@ export default ()=>{
             }
         })
     },[])
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     return(
@@ -60,6 +89,21 @@ export default ()=>{
                 </div>
                 <div>
                     {homeWorkData.descript}
+                </div>
+                <div
+                    style={{
+                        marginTop:"20px"
+                    }}
+                    >
+                    <Button
+                            onClick={downloadFile}
+                            icon={<UploadOutlined/>}
+                        >
+                            {/*<Input type='file' />*/}
+                            {/*<a type href="F:/title.docx">*/}
+                                下载作业文件
+                            {/*</a>*/}
+                        </Button>
                 </div>
             </div>
         </Description>

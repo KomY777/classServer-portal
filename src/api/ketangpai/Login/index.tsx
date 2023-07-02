@@ -2,20 +2,19 @@ import React from "react";
 import axios from "axios";
 
 
-
 /**
  * 用户登录
  * @param User
  * @constructor
  */
-function Ketangpai_USER_LOGIN(User:any){
-    return(
+function Ketangpai_USER_LOGIN(User: any) {
+    return (
         axios.get(
             "/api/user/login",
             {
-                params:{
-                    username:User.userName,
-                    password:User.password,
+                params: {
+                    username: User.userName,
+                    password: User.password,
                 }
             }
         )
@@ -27,8 +26,8 @@ function Ketangpai_USER_LOGIN(User:any){
  * 注销用户
  * @constructor
  */
-function Ketangpai_USER_LOGOUT(){
-    return(
+function Ketangpai_USER_LOGOUT() {
+    return (
         axios.get(
             "/api/user/login",
         )
@@ -40,16 +39,16 @@ function Ketangpai_USER_LOGOUT(){
  * @param User
  * @constructor
  */
-function Ketangpai_USER_REGISTER(User:any){
-    return(
+function Ketangpai_USER_REGISTER(User: any) {
+    return (
         axios.post(
             "/api/user/register",
             {
-                identity:User.identity,
-                name:User.username,
-                password:User.password,
-                username:User.username,
-                number:User.number
+                identity: User.identity,
+                name: User.name,
+                password: User.password,
+                username: User.username,
+                number: User.number
             }
         )
     )
@@ -61,12 +60,14 @@ function Ketangpai_USER_REGISTER(User:any){
  * User
  * @constructor
  */
-function Ketangpai_USER_SENDMAIL(email:any){
-    return(
-        axios.post(
+function Ketangpai_USER_SENDMAIL(email: string) {
+    return (
+        axios.get(
             "/api/user/sendMail",
             {
-                email:email,
+                params:{
+                    email: email,
+                }
             }
         )
     )
@@ -78,20 +79,34 @@ function Ketangpai_USER_SENDMAIL(email:any){
  * @param newUser
  * @constructor
  */
-function Ketangpai_USER_UPDATE(newUser:any){
-    return(
+function Ketangpai_USER_UPDATE(newUser: any) {
+    return (
         axios.get(
             "/api/user/update",
             {
-                params:{
-                    username:newUser.username,
-                    newPassword:newUser.newPassword,
-                    password:newUser.password,
+                params: {
+                    username: newUser.username,
+                    newPassword: newUser.newPassword,
+                    password: newUser.password,
                 }
             }
         )
     )
 }
+
+// function Ketangpai_USER_SENDMAIL(email: string) {
+//     return (
+//         axios.get(
+//             "/api/user/sendMail",
+//             {
+//                 params: {
+//                     email: email
+//                 }
+//             }
+//         )
+//     )
+// }
+
 
 export {
     Ketangpai_USER_LOGIN,

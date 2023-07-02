@@ -14,7 +14,7 @@ export default () => {
             <Button
                 className="MyStudy"
             >
-                我学的
+                我教的
             </Button>
             <Button
                 className="ButtonGuidang"

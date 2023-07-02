@@ -51,6 +51,8 @@ const LeftButton=styled.div`
 
 const BottomFrame=styled.div`
   border: black 1px solid;
+  position: relative;
+  top: -40px;
   font-size: 16px;
   height: 300px;
   padding: 20px;
@@ -95,9 +97,9 @@ const BottomFrame=styled.div`
   
   .workName{
     width: 80px;
-    height: 80px;
-    line-height: 80px;
-    display: inline-block;
+    height: 20px;
+    line-height: 20px;
+    //display: inline-block;
 
   }
   .workNumber{

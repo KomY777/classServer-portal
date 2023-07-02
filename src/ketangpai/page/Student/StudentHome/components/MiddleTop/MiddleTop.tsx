@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Button, Card, Collapse, Form, Input, message, Modal} from 'antd';
+import {Button, Empty, Collapse, Form, Input, message, Modal} from 'antd';
 import {HeaderBottomLeft, HeaderBottomRight, HeaderBottomWrapper, Wrapper} from "./styled";
 import ClassCard from "../../../../../components/ClassCardStudent/ClassCardStudent";
 import {
@@ -44,6 +44,7 @@ const HeaderBottom = () => {
             const {data} = req
             if (data.code==200){
                 message.success("加入课程成功")
+                window.location.reload()
             }else {
                 message.error("加入失败")
             }
@@ -148,21 +149,23 @@ export default () => {
                     header={<HeaderBottom/>}
                     key="1"
                 >
-                    {topDatas.map((item) => (
-                        <ClassCard
-                            id={item.id}
-                            courseName={item.courseName}
-                            className={item.className}
-                            teacherName={item.teacherName}
-                            courseState={item.courseState}
-                            teacherId={item.teacherId}
-                            academicYear={item.academicYear}
-                            semester={item.semester}
-                            courseCode={item.courseCode}
-                            url={"/student/course/learn"}
-                            isTop={false}
-                        />
-                    ))}
+                    {
+                        topDatas.length !==0?topDatas.map((item) => (
+                            <ClassCard
+                                id={item.id}
+                                courseName={item.courseName}
+                                className={item.className}
+                                teacherName={item.teacherName}
+                                courseState={item.courseState}
+                                teacherId={item.teacherId}
+                                academicYear={item.academicYear}
+                                semester={item.semester}
+                                courseCode={item.courseCode}
+                                url={"/student/course/learn"}
+                                isTop={false}
+                            />
+                        )):<Empty description="暂无课程" />
+                    }
                 </Panel>
             </Collapse>
         </Wrapper>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {
     CodeImg,
     CodeImgBottom,
@@ -14,6 +14,7 @@ import {EditOutlined} from "@ant-design/icons";
 import {Image} from "antd";
 import imgWork from "../../../../../../../../../../Static/img_1.png"
 import {useNavigate} from "react-router-dom";
+import {Ketangpain_STUDNENTHOMEWORK_GETALLHOMEWORKINFO} from "../../../../../../../../../../api/ketangpai/HomeWork";
 
 interface Props{
     homeworkId:string,
@@ -36,6 +37,8 @@ export default (
 )=>{
 
     const navigate = useNavigate();
+
+
     return(
         <Wrapper>
             <CodeImg>
@@ -51,16 +54,15 @@ export default (
                 >{title}</TitleByCourse>
                 <Description>
                     <Time>提交截止时间:{endTime}</Time>
-                    <StateCode>{date}</StateCode>
+                    {/*<StateCode>{date}</StateCode>*/}
                     <MyselfWork>个人作业</MyselfWork>
                 </Description>
-                <div
-                    style={{
-                        color:'#4285f4'
-                    }}
-                >{Correcting}</div>
+                {/*<div*/}
+                {/*    style={{*/}
+                {/*        color:'#4285f4'*/}
+                {/*    }}*/}
+                {/*>{Correcting}</div>*/}
             </DescriptionRight>
-        </Wrapper
-            >
+        </Wrapper>
     )
 }

@@ -11,15 +11,22 @@ const Wrapper = styled.div`
 `
 
 const TitleByCourse = styled.div`
-  font-size: 20px;
-  width:fit-content;`
+  //font-size: 20px;
+  display: inline-block;
+  //width:fit-content;
+`
 const Description = styled.div`
   display: inline-block;
 `
 
 const Time = styled.div`
   display: inline-block;
-
+  &:before{
+    content: "|";
+    color: #DCDFE6;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
 `
 
 const StateCode = styled.div`

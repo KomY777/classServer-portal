@@ -12,8 +12,11 @@ import {
 } from "./styled";
 import imgWork from "../../../../../../../../../Static/img_1.png"
 import {useNavigate} from "react-router-dom";
-import {Button} from "antd";
-import {Ketangpai_STUDENTHOMEWORK_UPDATEHOMEWORK} from "../../../../../../../../../api/ketangpai/HomeWork";
+import {Button, message} from "antd";
+import {
+    Ketangpai_STUDENTHOMEWORK_DELETEHOMEWORK,
+    Ketangpai_STUDENTHOMEWORK_UPDATEHOMEWORK
+} from "../../../../../../../../../api/ketangpai/HomeWork";
 import AddHomework from "./components/AddHomework";
 
 
@@ -43,13 +46,32 @@ export default ({
     endTime,
     date,
     dataAll,
-    // Correcting,
                 }:Props
                 )=>{
 
     const navigate = useNavigate();
 
     const [updataHomework,setUpdataHomework] = useState(false);
+
+
+
+
+    const deleteHomework = ()=>{
+        Ketangpai_STUDENTHOMEWORK_DELETEHOMEWORK(homeworkId).then(req=>{
+            if (req.data.code == 200){
+                message.success("删除成功")
+            }else {
+                message.error("删除失败")
+            }
+            window.location.reload()
+        })
+    }
+
+
+
+
+
+
 
     return(
         <Wrapper>
@@ -61,6 +83,7 @@ export default ({
                 <TitleByCourse
                     onClick={()=>{
                         localStorage.setItem("homeworkId",homeworkId)
+                        localStorage.setItem("homeTitle",title)
                         navigate(`/teacher/homeWork/detail`,{replace: true})
                     }}>{title}</TitleByCourse>
                 <Description>
@@ -76,6 +99,14 @@ export default ({
                         }}
                     >
                         修改
+                    </MyUpdate>
+                    <MyUpdate
+                        style={{
+                            color:"red"
+                        }}
+                        onClick={deleteHomework}
+                    >
+                        删除
                     </MyUpdate>
                 </Description>
             </DescriptionRight>

@@ -50,6 +50,7 @@ export default () => {
             const {data} = req
             if (data.code == 200) {
                 setHomeworkDate(data.data)
+                console.log(data)
             }
         })
     }, [])

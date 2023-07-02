@@ -149,7 +149,7 @@ export default ({
                 }}
             >
                 <Time>
-                    {semester}
+                    {academicYear}-{semester}
                 </Time>
                 <CourseTitle>
                     {courseName}

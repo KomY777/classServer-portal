@@ -1,39 +1,94 @@
 import React, {useEffect, useState} from "react";
 import imgWork from "../../../../../../Static/img_1.png";
 import {BottomFrame, CodeImg, Description, DescriptionRight, LeftButton, TitleByCourse} from "./styled";
-import {Button, Divider, Form, Input, Upload, UploadProps} from "antd";
-import {UploadOutlined} from "@ant-design/icons";
+import {Button, Divider, Form, Input, message, Upload, UploadProps} from "antd";
+import {DownloadOutlined, UploadOutlined} from "@ant-design/icons";
 import {promises} from "fs";
-import {Ketangpai_STUDENTHOMEWORK_CORRECTING} from "../../../../../../api/ketangpai/HomeWork";
+import {
+    Ketangapi_STUDENTHOMEWORK_VIEWCOMMIT, Ketangpai_STUDENTHOME_WARKING,
+    Ketangpai_STUDENTHOMEWORK_CORRECTING,
+    Ketangpai_STUDENTHOMEWORK_CREATHOMEWORK
+} from "../../../../../../api/ketangpai/HomeWork";
+import TextArea from "antd/es/input/TextArea";
+import axios from "axios/index";
 
-interface homework{
-    title:string,
-    endTime:string,
+interface homework {
+    title: string,
+    endTime: string,
+}
+
+interface asd {
+    id: string,
+    commitState: string,
+    filePath: string,
+    grade: string,
+    homeworkId: string,
+    studentId: string,
+    remark: string,
 }
 
 export default () => {
 
 
+    const [from] = Form.useForm();
 
-    const [homeWorkData,setHomeWorkData] = useState<homework>({
-        title:"",
-        endTime:"",
+    const [homeWorkData, setHomeWorkData] = useState<homework>({
+        title: "",
+        endTime: "",
     });
 
-    useEffect(()=>{
-        Ketangpai_STUDENTHOMEWORK_CORRECTING(`${localStorage.getItem("homeworkId")}`).then(req=>{
-            if (req.data.code == 200){
+
+    const [studentData, setStudentData] = useState("");
+    const [dataAAA, setDataAAA] = useState<asd>({
+        id: "",
+        commitState: "",
+        filePath: "",
+        grade: `${localStorage.getItem("grade")}`,
+        homeworkId: "",
+        studentId: "",
+        remark: "",
+    });
+
+
+    useEffect(() => {
+        Ketangpai_STUDENTHOMEWORK_CORRECTING(`${localStorage.getItem("homeworkId")}`).then(req => {
+            if (req.data.code == 200) {
                 const dataA = req.data.data
                 setHomeWorkData({
-                    title:dataA.title,
-                    endTime:dataA.endTime,
+                    title: dataA.title,
+                    endTime: dataA.endTime,
                 })
             }
         })
-    },[])
+        Ketangapi_STUDENTHOMEWORK_VIEWCOMMIT(localStorage.getItem("studentHomeworkId")).then(req => {
+            const {data} = req
+            if (data.code == 200) {
+                setDataAAA(data.data)
+            }
+        })
+    }, [])
 
 
-
+    const onFinish = (values: any) => {
+        const AAAA = {
+            id: dataAAA.id,
+            commitState: "1",
+            filePath: "",
+            grade: values.grades,
+            homeworkId: dataAAA.homeworkId,
+            studentId: dataAAA.studentId,
+            remark: dataAAA.remark,
+        }
+        localStorage.setItem("grade",values.grades)
+        Ketangpai_STUDENTHOME_WARKING(AAAA).then(req => {
+            const {data} = req;
+            if (data.code == 200) {
+                message.success("批改成功")
+            } else {
+                message.error("批改失败")
+            }
+        })
+    };
 
 
     return (
@@ -67,46 +122,56 @@ export default () => {
             <LeftButton>提交内容</LeftButton>
             <BottomFrame>
                 <div
-                    className="LineTop"
+                    style={{
+                        display: "inline-black"
+                    }}
+                >学生留言：
+                </div>
+                <TextArea
+                    disabled={true}
+                    value={`${studentData}`}
+                />
+                <Form
+                    form={from}
+                    layout="vertical"
+                    onFinish={onFinish}
+                    initialValues={{
+                        grades:dataAAA.grade
+                    }}
                 >
+                    <Form.Item
+                        name="grades"
+                        label="成绩"
+                        validateFirst={true}
+                        rules={[
+                            {
+                                required: true,
+                                message: '未评分!',
+                            },
+                        ]}
+                    >
+                        <Input />
+                    </Form.Item>
                     <div
-                        className="LineTopLeft"
-                    >教师评语
+                        className="workName"
+                    >作业附件
                     </div>
                     <div
-                        className="LineTopRight"
-                    >成绩
-                    </div>
-                </div>
-                <div
-                    className="LineOneTop"
-                >
-                    <div
-                        className="LineOneTopLeft"
-                    >暂无
-                    </div>
-                    <div
-                        className="LineOneTopRight"
-                    >分数未公布/100
-                    </div>
-                </div>
-                <div
-                    className="workName"
-                >作业附件
-                </div>
-                <div
-                    className="workNumber"
-                >1个
-                </div>
-                <div>
-                    <Upload
-                        onChange={file=>{
-                            console.log(file)
+                        style={{
+                            marginTop: "20px"
                         }}
                     >
-                        <Button icon={<UploadOutlined/>}>Upload</Button>
-                    </Upload>
-                </div>
+                        <Button icon={<DownloadOutlined/>}>下载查看作业</Button>
+                    </div>
+                    <Button
+                        style={{
+                            marginTop: "20px"
+                        }}
+                        htmlType="submit"
+                    >
+                        确认批改
+                    </Button>
+                </Form>
             </BottomFrame>
         </div>
     )

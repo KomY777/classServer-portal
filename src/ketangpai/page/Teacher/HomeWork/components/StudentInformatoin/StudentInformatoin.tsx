@@ -39,13 +39,15 @@ export default (
             const {data} = req
             if (data.code==200){
                 setStudentInfo(data.data)
+                console.log(data)
             }
         })
-    })
+    },[])
 
 
     return(
         <div>
+            <TitleByCourse>作业名称：{localStorage.getItem("homeTitle")}</TitleByCourse>
             {
                 studentInfo.map((item)=>(
                     <Wrapper>
@@ -54,18 +56,14 @@ export default (
                             <CodeImgBottom>作业</CodeImgBottom>
                         </CodeImg>
                         <DescriptionRight>
-                            <TitleByCourse
-                                // onClick={()=>{
-                                //     localStorage.setItem("homeworkId",homeworkId)
-                                //     navigate(`/teacher/homeWork/detail`,{replace: true})
-                                // }}
-                            ></TitleByCourse>
                             <Description>
                                 <Time>提交时间:{item.updateTime}</Time>
                                 <StateCode>提交学生：{item.studentId}</StateCode>
                                 <MyselfWork
                                 onClick={()=>{
                                     localStorage.setItem("homeworkId",item.homeworkId)
+                                    localStorage.setItem("studentHomeworkId",item.id)
+                                    localStorage.setItem("grade",item.grade)
                                     navigate(`/teacher/homeWork/submitJob`,{replace: true})
                                 }}
                                 >批改作业</MyselfWork>

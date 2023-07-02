@@ -1,34 +1,110 @@
 import React, {useEffect, useState} from "react";
 import imgWork from "../../../../../../Static/img_1.png";
 import {BottomFrame, CodeImg, Description, DescriptionRight, LeftButton, TitleByCourse} from "./styled";
-import {Button, Divider, Form, Input, Upload, UploadProps} from "antd";
-import {UploadOutlined} from "@ant-design/icons";
-import {Ketangpai_STUDENTHOMEWORK_CORRECTING} from "../../../../../../api/ketangpai/HomeWork";
+import {Button, Form, Input, message, Upload} from "antd";
+import {InboxOutlined} from "@ant-design/icons";
+import {
+    Ketangapi_STUDENTHOMEWORK_COMMIHOMEWORK,
+    Ketangpai_STUDENTHOMEWORK_CORRECTING, Ketangpain_STUDNENTHOMEWORK_GETALLHOMEWORKINFO
+} from "../../../../../../api/ketangpai/HomeWork";
+import Dragger from "antd/es/upload/Dragger";
+import {ContentLine, GoLogin, SelectIdentity, TitleSI} from "../../../../Home/components/Enroll/styled";
+import {Link} from "react-router-dom";
+import TextArea from "antd/es/input/TextArea";
 
 
-
-interface homework{
-    title:string,
-    endTime:string,
+interface homework {
+    title: string,
+    endTime: string,
 }
 
+interface codeState{
+    submissionStatus:string,
+    gradingStatus:string,
+    gradesStatus:string,
+    remarkStatus:string,
+}
+
+
 export default () => {
-    const [homeWorkData,setHomeWorkData] = useState<homework>({
-        title:"",
-        endTime:"",
+
+    const [from] = Form.useForm();
+    const [homeworkInfo, setHomeworkInfo] = useState<codeState>({
+        submissionStatus:"",
+        gradingStatus:"",
+        gradesStatus:"",
+        remarkStatus:"",
     });
 
-    useEffect(()=>{
-        Ketangpai_STUDENTHOMEWORK_CORRECTING(`${localStorage.getItem("homeworkId")}`).then(req=>{
-            if (req.data.code == 200){
+    const [homeWorkData, setHomeWorkData] = useState<homework>({
+        title: "",
+        endTime: "",
+    });
+
+
+    const onFinish = (values: any) => {
+        // console.log(values)
+        const homeInfo = {
+            homeworkId: localStorage.getItem("homeworkId"),
+            studentId: localStorage.getItem("userId"),
+            remark: values.message,
+            filePath: "",
+            commitState: "0",
+        }
+        Ketangapi_STUDENTHOMEWORK_COMMIHOMEWORK(homeInfo).then(req => {
+            const {data} = req;
+            if (data.code == 200) {
+                message.success("提交成功")
+            } else {
+                message.error("提交失败")
+            }
+        })
+        window.location.reload()
+    }
+
+
+    useEffect(() => {
+        Ketangpai_STUDENTHOMEWORK_CORRECTING(`${localStorage.getItem("homeworkId")}`).then(req => {
+            if (req.data.code == 200) {
                 const dataA = req.data.data
                 setHomeWorkData({
-                    title:dataA.title,
-                    endTime:dataA.endTime,
+                    title: dataA.title,
+                    endTime: dataA.endTime,
                 })
             }
         })
-    },[])
+        Ketangpain_STUDNENTHOMEWORK_GETALLHOMEWORKINFO(`${localStorage.getItem("homeworkId")}`).then(req => {
+            const {data} = req
+            // console.log(data)
+            if (data.code==200){
+                const dataOne = data.data[0]
+                console.log(dataOne)
+                if (dataOne.commitState==1){
+                    setHomeworkInfo({
+                        submissionStatus:"已提交",
+                        gradingStatus:"以批改",
+                        gradesStatus:dataOne.grade,
+                        remarkStatus:dataOne.remark,
+                    })
+                }else if (dataOne.commitState==1){
+                    setHomeworkInfo({
+                        submissionStatus:"已提交",
+                        gradingStatus:"待批改",
+                        gradesStatus:"暂无成绩",
+                        remarkStatus:dataOne.remark,
+                    })
+                }else {
+                    setHomeworkInfo({
+                        submissionStatus:"未提交",
+                        gradingStatus:"未批改",
+                        gradesStatus:"暂无成绩",
+                        remarkStatus:"",
+                    })
+                }
+            }
+        })
+
+    }, [])
 
     return (
         <div>
@@ -60,46 +136,94 @@ export default () => {
             </div>
             <LeftButton>提交内容</LeftButton>
             <BottomFrame>
-                <div
-                    className="LineTop"
-                >
+                <div>
                     <div
-                        className="LineTopLeft"
-                    >教师评语
+                        style={{
+                            display: "inline-block"
+                        }}
+                    >
+                        提交状态：
                     </div>
                     <div
-                        className="LineTopRight"
-                    >成绩
+                        style={{
+                            display: "inline-block"
+                        }}
+                    >
+                        {homeworkInfo.submissionStatus}
                     </div>
                 </div>
-                <div
-                    className="LineOneTop"
-                >
+                <div>
                     <div
-                        className="LineOneTopLeft"
-                    >暂无
+                        style={{
+                            display: "inline-block"
+                        }}
+                    >
+                        批改状态：
+                    </div>
+                    <div
+                        style={{
+                            display: "inline-block"
+                        }}
+                    >
+                        {homeworkInfo.gradingStatus}
+                    </div>
+                </div>
+                <div>
+                    <div
+                        className="LineTop"
+                    >成绩：
                     </div>
                     <div
                         className="LineOneTopRight"
-                    >分数未公布/100
+                    >{homeworkInfo.gradesStatus}
                     </div>
                 </div>
-                <div
-                    className="workName"
-                >作业附件
-                </div>
-                <div
-                    className="workNumber"
-                >1个
-                </div>
-                <div>
-                    <Upload
-                        onChange={file=>{
+                <Form
+                    style={{
+                        marginTop: "20px"
+                    }}
+                    onFinish={onFinish}
+                    form={from}
+                    layout="vertical"
+
+                >
+                    <Form.Item
+                        label="留言："
+                        name="message"
+                    >
+                        <TextArea/>
+                    </Form.Item>
+
+                    <div
+                        className="workName"
+                    >作业附件：
+                    </div>
+                    <div>
+                        <Dragger
+                            onChange={file => {
+                            }}
+                        >
+                            {/*<Button*/}
+                            {/*    icon={<UploadOutlined/>}>上传文件</Button>*/}
+                            <p className="ant-upload-drag-icon">
+                                <InboxOutlined/>
+                            </p>
+                            <p className="ant-upload-text">点击选择您要上传的文件</p>
+                            <p className="ant-upload-hint">
+                                每次允许上传一个文件
+                            </p>
+                        </Dragger>
+                    </div>
+                    <Button
+                        htmlType="submit"
+                        type="primary"
+                        style={{
+                            marginTop: "10px"
                         }}
                     >
-                        <Button icon={<UploadOutlined/>}>Upload</Button>
-                    </Upload>
-                </div>
+                        确定
+                    </Button>
+                </Form>
             </BottomFrame>
         </div>
     )
